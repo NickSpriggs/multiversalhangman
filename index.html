@@ -554,20 +554,20 @@ function checkScore(boolean) {
         
         setTimeout(function () {
   			playAgain();
-  		}, 750);       
+  		}, 600);       
     	document.getElementById("category").innerHTML = "Multiversal Hangman";	
         
        	star = '<span class="fa fa-star checked"></span>';
 		empty = '<span class="fa fa-star"></span>';
         
         if (countInArray(winArr, "Win") == 3) {
-	       document.getElementById("score").innerHTML += star + star + star;     
+	       document.getElementById("score").innerHTML = "Score:" + star + star + star;     
         } else if (countInArray(winArr, "Win") == 2) {
-	       document.getElementById("score").innerHTML += star + star + empty;
+	       document.getElementById("score").innerHTML = "Score:" + star + star + empty;
         } else if (countInArray(winArr, "Win") == 1) {
-	       document.getElementById("score").innerHTML += star + empty + empty;   
+	       document.getElementById("score").innerHTML = "Score:" + star + empty + empty;   
         } else {
-	       document.getElementById("score").innerHTML += empty + empty + empty;   
+	       document.getElementById("score").innerHTML = "Score:" + empty + empty + empty;   
         }
     }
 }
