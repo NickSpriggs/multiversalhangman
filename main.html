@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Page Title</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+
+.checked {
+  color: orange;
+}
+
+.TitleBox {
+     background-color: black;
+     text-align: center;
+     height: 40px;
+     width: 300px;
+     font-size: 30px;
+     color: white;
+     }
+     
+#box {
+     background-color: grey;
+     color: white;
+     height: 186px;
+     width: 300px;
+     font-size: 25px;
+     }
+     
+#screen {
+     background-color: #C11414;
+     height: 246px;
+     width: 300px;
+     }
+
+.letter {
+     background-color: white;
+     display: inline-block;     
+     width: 30px;
+     height: 40px;
+     text-align: center;
+     border: 1px solid black; 
+     
+     padding-top: 5px;
+     color: black;
+     font-size: 30px;
+     }
+
+.symbol {
+     background-color: lightgrey;
+     display: inline-block;
+     width: 30px;
+     height: 31px;
+     text-align: center;
+     border: 1px solid black;
+     }
+
+#guessButton {
+     background-color: #C11901;
+     height: 35px;
+     text-align: center;
+     padding-top: 5px;
+     border: 1px solid black;
+     display: inline-block;
+     width: 298px;
+     }
+     
+#guessButton:hover {
+     background-color: darkred;
+     cursor: pointer;
+     }
+
+.key {
+     display: inline-block;
+     font-size: 23px;
+     float: left;
+     background-color: blue;
+     width: 21.075px;
+     height: 30px;
+     text-align: center;
+     border: 1px solid black;
+     }
+     
+.key:hover {
+     background-color: darkblue;
+     cursor: pointer;
+     }
+
+#keyboard {
+	text-align: center;
+}
+
+#directionL, #directionR  {
+     background-color: green;
+     color: white;
+     display: inline-block;
+     float: left;
+     width: 148px;
+     height: 38px;
+     text-align: center;
+     padding: 20px 0;
+     border: 1px solid black;	
+}
+
+#directionL:hover, #directionR:hover  {
+     background-color: darkgreen;
+     cursor: pointer;
+}
+
+.middle {
+     display: inline-block;  
+     float: left;
+}
+
+
+--------------------------------------------------------------
+
+.guess {
+     display: inline-block;
+     background-color: white;
+     float: left;
+     height: 40px;
+     width: 48px;
+     text-align: center;
+     border: 1px solid black;
+     color: black
+}
+
+
+#welcome {
+      position: fixed;
+      display: block;
+      height: 186px;
+      width: 300px;
+	  color: white;
+      background-color: darkgrey;
+      z-index: 2;
+}
+
+#playAgain {
+      position: fixed;
+      display: none;
+      height: 131px;
+      width: 300px;
+	  color: white;
+      z-index: 2;
+}
+
+.playButton {
+      background-color: green;
+      border: 1px solid black;
+      text-align: center;
+      font-size: 51px;
+}
+
+.playButton:hover {
+      background-color: darkgreen;
+}
+
+.ruleButton {
+      background-color: blue;
+      border: 1px solid black;
+      text-align: center;
+      font-size: 51px;
+}
+
+.ruleButton:hover {
+      background-color: darkblue;
+}
+
+#settings {
+	  display: none;
+}
+
+.pixel {
+     background-color: transparent;
+     height: 8px;
+     width: 8px;
+     font-size: 6px;
+     float: left;
+     
+     color: transparent; 
+}
+
+#pixelContainer {
+	padding-top: 20px;
+    padding-left: 2px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="TitleBox" id="category">Multiversal Hangman</div>
+
+	<div id="screen">
+    	<div id="pixelContainer"></div>
+    </div>
+
+	<div id="welcome">
+    	<div>
+          <div class="playButton" onclick="startGames()" style="
+          height: 93px; font-size: 75px;">Play!</div>
+          <div class="ruleButton" onclick="setting()" style="
+          height: 93px; font-size: 75px;">Settings</div>
+        </div>
+    </div>
+    
+    <div id="playAgain">
+    	<div>
+          <div id="score" class="playButton" style="background-color: black;
+          height: 65px;">Score:
+          </div>
+        
+          <div class="playButton" onclick="startGames()">Play Again!</div>
+          <div class="ruleButton" onclick="setting()">Settings</div>
+        </div>
+    </div>
+
+<div id="box">        
+	<div id="puzzle">
+      <div id="directionL" onclick="shift(0)">←</div>
+      <div class="middle">      
+        <div id="word"></div>      
+        <div id="code"></div>
+      </div>
+      <div id="directionR" onclick="shift(1)">→</div>
+	</div>
+    
+    <div id="guessButton" onclick="guess()">Guess Word</div>
+    
+    <div id="keyboard">
+      <div id="A" onclick="setLetter(0)" class="key">A</div>
+      <div id="B" onclick="setLetter(1)" class="key">B</div>
+      <div id="C" onclick="setLetter(2)" class="key">C</div>
+      <div id="D" onclick="setLetter(3)" class="key">D</div>
+      <div id="E" onclick="setLetter(4)" class="key">E</div>
+      <div id="F" onclick="setLetter(5)" class="key">F</div>
+      <div id="G" onclick="setLetter(6)" class="key">G</div>
+      <div id="H" onclick="setLetter(7)" class="key">H</div>
+      <div id="I" onclick="setLetter(8)" class="key">I</div>
+      <div id="J" onclick="setLetter(9)" class="key">J</div>
+      <div id="K" onclick="setLetter(10)" class="key">K</div>
+      <div id="L" onclick="setLetter(11)" class="key">L</div>
+      <div id="M" onclick="setLetter(12)" class="key">M</div>
+      <div id="N" onclick="setLetter(13)" class="key">N</div>
+      <div id="O" onclick="setLetter(14)" class="key">O</div>
+      <div id="P" onclick="setLetter(15)" class="key">P</div>
+      <div id="Q" onclick="setLetter(16)" class="key">Q</div>
+      <div id="R" onclick="setLetter(17)" class="key">R</div>
+      <div id="S" onclick="setLetter(18)" class="key">S</div>
+      <div id="T" onclick="setLetter(19)" class="key">T</div>
+      <div id="U" onclick="setLetter(20)" class="key">U</div>
+      <div id="V" onclick="setLetter(21)" class="key">V</div>
+      <div id="W" onclick="setLetter(22)" class="key">W</div>
+      <div id="X" onclick="setLetter(23)" class="key">X</div>
+      <div id="Y" onclick="setLetter(24)" class="key">Y</div>
+      <div id="Z" onclick="setLetter(25)" class="key">Z</div>
+    </div>
+    
+</div>
+
+<div id="settings">
+  <br>
+  <button onclick="clearWords()">Clear</button>
+  <button onclick="shuffle()">Shuffle</button>
+
+  <button onclick="startGames()">Start Games</button>
+  <button onclick="test()">Test</button>
+
+
+  <br><br>
+  <button onclick="code()">Code</button>
+  <button onclick="decode()">Decode</button>
+  <div>
+    <input type="text" id="fname">
+    <input type="text" id="result">
+  </div> 
+  
+  <button onclick="createPixels()">Pixels</button>
+  <button onclick="createLines()">Lines</button>
+  <br>
+  <button onclick="createShape(0)">Head</button>
+  <button onclick="createShape(1)">Torso</button>
+  <button onclick="createShape(2)">Left Leg</button>  
+  <button onclick="createShape(3)">Left Arm</button>
+  <button onclick="createShape(4)">Right Leg</button>  
+  <button onclick="createShape(5)">Right Arm</button>
+</div>
+
+
+<script>
+
+var food = ["APPLE", "ORANGE", "BANANA", "GRAPE", "PEACH"];
+var animals = ["CAT", "DOG", "BIRD", "MOUSE", "LION", "GOAT", "SPIDER"];
+var sports = ["TENNIS", "SOCCER", "CRICKET", "GOAL", "TRACK", "HOCKEY"];
+var cities = ["LONDON", "ATLANTA", "SYDNEY", "PARIS", "MOSCOW"];
+
+var categories = [food, sports, animals, cities];
+// Must also edit findCategories();
+
+// Create Words for Animals, Food, Sports, Objects (20 for each letter) 
+// Max is 7 letters per word 
+// Would like to get to 10
+
+var symbols = ["🐵","🦁","🐧","🐮","🐔","🐸","🐙","🍎","🎁","🍆","💊","🌎","👑","😈","👽","🎃","🤖","👻","🏀","🧩","💣","🐳","🚦","💎","🔑","🧲"];
+
+var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
+
+
+var initial = document.getElementById("box").innerHTML;
+var initialKeys = document.getElementById("keyboard").innerHTML;
+var wrong = 0;
+var games = [];
+var currentScreen = 0;
+
+
+function reset() {
+	document.getElementById("box").innerHTML = initial;
+    wrong = 0;
+	games = [];
+    currentScreen = 0;
+
+    document.getElementById("playAgain").style.display = "none";
+    document.getElementById("welcome").style.display = "none";
+}
+
+function setting() {
+    document.getElementById("settings").style.display = "block";
+}
+
+/// Begin Games ///
+
+function startGames() {   
+	reset();
+	shuffle();
+       
+	let x = 0;
+    let y = 0;
+    let z = 0;
+    
+    while (x == y || y == z || x == z) {
+      x = createWord();
+      y = createWord();
+      z = createWord();    
+    }
+        
+    let gameOne = {
+  		id: 0,
+  		word: x,
+  		guess: 0,
+  		currentLetters: emptyArr(x.length),
+        code: toSymbols(x),
+        left: 2,
+  		right: 1,
+        win: "Play",
+        color: "#A217C4",
+        category: findCategory(x),
+        triedLetters: [],
+	};
+    games.push(gameOne);
+    let gameTwo = {
+  		id: 1,
+  		word: y,
+  		guess: 0,
+  		currentLetters: emptyArr(y.length),
+        code: toSymbols(y),
+        left: 0,
+  		right: 2,
+        win: "Play",
+        color: "#0175C1",
+        category: findCategory(y),
+        triedLetters: [],        
+	};
+    games.push(gameTwo);
+    let gameThree = {
+  		id: 2,
+  		word: z,
+  		guess: 0,
+  		currentLetters: emptyArr(z.length),
+        code: toSymbols(z),
+        left: 1,
+  		right: 0,
+        win: "Play",
+        color: "#DCA508",
+        category: findCategory(z),
+        triedLetters: [],
+	};
+    games.push(gameThree);
+
+	//// Start GameObjectOne ////
+    document.getElementById("pixelContainer").innerHTML = hangman;
+
+    middle(games[currentScreen].word.length);
+    
+    setBackground();
+    document.getElementById("category").innerHTML = 	
+    "Category: " + games[currentScreen].category;
+    
+    document.getElementById("word").innerHTML =
+    toDiv(games[currentScreen].currentLetters, "letter");
+    
+    document.getElementById("code").innerHTML = 
+    toDiv(games[currentScreen].code, "symbol");
+
+}
+
+function shift(input) {
+	if (input == 0) {
+    	currentScreen = games[currentScreen].left;
+    } 
+    if (input == 1) {
+    	currentScreen = games[currentScreen].right;    
+    }
+    //// Shift GameObjects ////
+    middle(games[currentScreen].word.length);
+    
+    setBackground();
+    document.getElementById("category").innerHTML = 	
+    "Category: " + games[currentScreen].category;
+
+    document.getElementById("word").innerHTML =
+    toDiv(games[currentScreen].currentLetters, "letter");
+    
+    document.getElementById("code").innerHTML = 
+    toDiv(games[currentScreen].code, "symbol");
+    
+    colorCheck();
+    clearKeys();
+    updateKeys();
+    updateHangman();
+}
+
+
+function setLetter(input) {
+	let emojis = document.getElementById("code").innerText;
+  	let emojisArray = Array.from(emojis);
+    
+    let text = document.getElementById("word").innerText;
+  	let textArray = Array.from(text);
+    
+    if (emojisArray.includes(symbols[input])) {
+    	returnArray = "";
+        
+        for (i=0; i < emojisArray.length; i++) {
+        	// if the letter matches the emoji
+        	if (emojisArray[i] == symbols[input]) {
+            	returnArray += letters[input];
+            // if the letter does not match
+            } else {
+            	returnArray += textArray[i];
+            }
+        }
+        
+        if (games[currentScreen].win == "Play") {
+            document.getElementById("word").innerHTML = 
+            toDiv(returnArray, "letter");
+
+            checkScore(true);
+
+
+			tempGreen(letters[input]);
+
+            //// Update successful letters for active gameObject ////
+            games[currentScreen].currentLetters = returnArray;        
+        }
+
+    } else {
+        //// Update tried letters for active gameObject //// 
+        //// Only allows ONE attempt for each wrong letter ////
+        if (!games[currentScreen].triedLetters.includes(letters[input])) {
+        	if (games[currentScreen].win == "Play") {
+              games[currentScreen].triedLetters.push(letters[input]);
+              checkScore(false);  
+
+              updateKeys();            
+            }
+        }
+    }
+}
+
+/// Need to make permenant ///
+function guess() {
+	let emojis = document.getElementById("code").innerText;    
+    let actualWord = toLetters(emojis);
+    
+    if(games[currentScreen].win == "Play") {
+        let guess = prompt("Guess Word:");
+        if (guess != null) {
+            guess = guess.toUpperCase();
+        }
+
+        if (guess == actualWord) {
+            document.getElementById("word").innerHTML = 
+            toDiv(guess, "letter");
+
+            //// Update letters for active gameObject ////
+            games[currentScreen].currentLetters = actualWord;
+
+            checkScore(true);        
+        } else {
+            if (guess != null) {
+                checkScore(false);
+            }
+        }
+    }
+}
+
+/// Need to Make Universal ///
+function checkScore(boolean) {
+	if (boolean == false) {
+        games[currentScreen].guess += 1;
+		
+        //id = "W" + games[currentScreen].guess;        
+        //document.getElementById(id).style.background = "red";
+        
+        document.getElementById("result").value = 
+        games[currentScreen].guess + " Wrong";
+        
+    }
+
+	let emojis = document.getElementById("code").innerText;    
+    let actualWord = toLetters(emojis);
+    
+    let currentStatus = document.getElementById("word").innerText;
+    
+	if (games[currentScreen].guess > 5) {
+       games[currentScreen].win = "Lose";
+       
+       // Lose Visual Condition //
+       colorCheck();
+    }
+    
+    if (currentStatus == actualWord && games[currentScreen].guess < 6) {
+       games[currentScreen].win = "Win";
+       
+       // Win Visual Condition //
+       colorCheck();
+    }
+    
+   updateHangman();
+    
+    // When All Three Are Over //
+    if (games[0].win != "Play" && games[1].win != "Play" && 
+    games[2].win != "Play") {
+    	var winArr = [games[0].win, games[1].win, games[2].win];
+        
+        setTimeout(function () {
+  			playAgain();
+  		}, 750);       
+    	document.getElementById("category").innerHTML = "Multiversal Hangman";	
+        
+       	star = '<span class="fa fa-star checked"></span>';
+		empty = '<span class="fa fa-star"></span>';
+        
+        if (countInArray(winArr, "Win") == 3) {
+	       document.getElementById("score").innerHTML += star + star + star;     
+        } else if (countInArray(winArr, "Win") == 2) {
+	       document.getElementById("score").innerHTML += star + star + empty;
+        } else if (countInArray(winArr, "Win") == 1) {
+	       document.getElementById("score").innerHTML += star + empty + empty;   
+        } else {
+	       document.getElementById("score").innerHTML += empty + empty + empty;   
+        }
+    }
+}
+
+function setBackground() {
+	background = games[currentScreen].color;
+	document.getElementById("screen").style.background = background;    
+}
+
+function playAgain() {
+	document.getElementById("playAgain").style.display = "block";
+}
+
+
+
+// ------------------------------------------------------------------------- //
+
+
+
+// shuffles the symbols //
+function shuffle() {    
+    for (let i = symbols.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [symbols[i], symbols[j]] = [symbols[j], symbols[i]];
+    }
+}
+
+// Creates random word //
+function createWord() {
+	var category = getCategory();
+
+    var randomNum = Math.floor(Math.random() * category.length);
+    var word = category[randomNum];
+
+	return word;
+}
+
+// Crerate random category //
+function getCategory() {    
+    var randomNum = Math.floor(Math.random() * categories.length);
+    var category = categories[randomNum];
+
+	return category;
+}
+
+// Find category of word by searching different array //
+function findCategory(inputWord) {
+    if (food.includes(inputWord)) {
+    	return "Food";
+    }
+    if (animals.includes(inputWord)) {
+    	return "Animals";
+    }
+    if (sports.includes(inputWord)) {
+    	return "Sports";
+    }
+    if (cities.includes(inputWord)) {
+    	return "Cities";
+    }
+}
+
+// Clears words //
+function clearWords() {    
+	document.getElementById("word").innerText = "";
+    document.getElementById("code").innerText = "";
+    document.getElementById("fname").value = "";
+    wrong = 0;
+}
+
+function toSymbols(input) {
+  let inputArray = Array.from(input);
+  
+  let output = "";
+            
+  for (i=0; i < inputArray.length; i++) {
+    index = letters.indexOf(inputArray[i]);
+    output += symbols[index];
+  }   
+	return output; 
+}
+
+function toLetters(input) {
+  let inputArray = Array.from(input);
+  
+  let output = "";
+            
+  for (i=0; i < inputArray.length; i++) {
+    index = symbols.indexOf(inputArray[i]);
+    output += letters[index];
+  }   
+	return output; 
+}
+
+function emptyArr(size) {
+   output = [];
+
+   for (i=0; i < size; i++) {
+      output.push("_")
+   }
+   return output;
+}
+
+function toDiv(input, divClass) {
+   let inputArray = Array.from(input);
+   output = "";
+
+   for (i=0; i < inputArray.length; i++) {
+      output += '<div class="' + divClass + '">' + inputArray[i] + '</div>';
+   }
+   return output;
+}
+
+function middle(length) {
+	if (length == 3) {
+    	document.getElementById("directionL").style.width =
+        "100px";
+         document.getElementById("directionR").style.width =
+        "100px";
+    }
+    if (length == 4) {
+    	document.getElementById("directionL").style.width =
+        "84px"; 
+    	document.getElementById("directionR").style.width =
+        "84px"; 
+    }
+    if (length == 5) {
+       	document.getElementById("directionL").style.width =
+        "68px";
+       	document.getElementById("directionR").style.width =
+        "68px";
+    }
+    if (length == 6) {
+       	document.getElementById("directionL").style.width =
+        "52px";
+       	document.getElementById("directionR").style.width =
+        "52px";
+    }
+    if (length == 7) {
+       	document.getElementById("directionL").style.width =
+        "36px";
+       	document.getElementById("directionR").style.width =
+        "36px";
+    }
+}
+
+function countInArray(array, what) {
+    var count = 0;
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] === what) {
+            count++;
+        }
+    }
+    return count;
+}
+
+function updateKeys() {
+	fails = games[currentScreen].triedLetters;  
+
+	for (i=0; i<fails.length; i++) {
+    	document.getElementById(fails[i]).style.background = 
+        "white";	
+        document.getElementById(fails[i]).style.color = 
+        "blue";
+    }
+}
+
+function clearKeys() {
+	document.getElementById("keyboard").innerHTML = initialKeys;
+}
+
+//// clean ////
+function tempGreen(input) {
+	document.getElementById(input).style.background = "green";
+    document.getElementById(input).style.color = "white";
+
+    col = document.getElementsByClassName("letter");
+    for (i=0; i<col.length; i++) {
+    	if (col[i].innerText == input) {
+        	col[i].style.background = "green";
+    		col[i].style.color = "white";
+        }
+    }
+    
+    setTimeout(function () {
+  		color(input, "blue", "white");
+  	}, 400);
+}
+
+function color(input, back, font) {
+	document.getElementById(input).style.background = back;
+    document.getElementById(input).style.color = font;
+    
+    col = document.getElementsByClassName("letter");
+    for (i=0; i<col.length; i++) {
+    	if (col[i].innerText == input && games[currentScreen].win == "Play") {
+        	col[i].style.background = "white";
+    		col[i].style.color = "black";
+        }
+    }
+}
+//// clean ^ //////
+
+
+function colorCheck() {
+	let color = "";
+    let fontColor = "black";
+    
+	if (games[currentScreen].win == "Play") {
+    	color = "white";
+    } else if (games[currentScreen].win == "Win") {
+    	color = "green"; 
+        fontColor = "white";
+    } else if (games[currentScreen].win == "Lose") {
+    	color = "black";
+        fontColor = "red";
+    }
+	letterElementArr = document.getElementsByClassName("letter");   
+    for (i=0; i<letterElementArr.length; i++) {
+    
+    	if (games[currentScreen].win == "Lose") {
+            if (letterElementArr[i].innerText != 
+            games[currentScreen].word[i]) {
+                letterElementArr[i].style.background = color;
+            	letterElementArr[i].style.color = fontColor; 
+            }        
+        } else {
+            letterElementArr[i].style.background = color;
+            letterElementArr[i].style.color = fontColor;        
+        }
+    }
+}
+
+
+
+// create pixels //
+var pixelArray = [];
+function createPixels() {
+    var gameSpace = document.getElementById("pixelContainer");
+    gameSpace.innerHTML = "";
+    
+	var i;	
+  
+    for (i=0; i < 888; i++) {
+
+        var pixelDiv = '<div id=' + 'P' + (i) + ' class="pixel">' + i + '</div>'; 
+        
+        var pixelObject = {
+            id: "P" + i, 
+            type: "pixel",
+        };
+        
+        gameSpace.innerHTML += pixelDiv;
+        pixelArray.push(pixelObject); 
+    } 
+}
+
+function createLines() {
+	let bc = "black";
+    
+	// base
+	for (i=822; i<840; i++) {
+    	id = 'P' + i;
+    	document.getElementById(id).style.background = bc;        
+    }
+    // bar
+    for (i=85; i<840; i+=37) {
+    	id = 'P' + i;
+    	document.getElementById(id).style.background = bc;        
+    }
+    // top
+    for (i=85; i<97; i++) {
+    	id = 'P' + i;
+    	document.getElementById(id).style.background = bc;        
+    	document.getElementById("P133").style.background = bc; 
+        document.getElementById("P170").style.background = bc; 
+
+		// corner
+        document.getElementById("P197").style.background = bc;
+        document.getElementById("P161").style.background = bc;
+        document.getElementById("P125").style.background = bc; 
+	}
+    hangman = document.getElementById("pixelContainer").innerHTML;
+}
+
+
+// createPixels() and createLines() upon opening app //
+
+let head = [206, 207, 208, 
+    242, 246,
+    278, 284,
+    315, 321,
+    352, 358,
+    390, 394,
+    428, 429, 430];    
+let torso = [466, 503, 540, 577, 614];
+let rightArm = [468, 506, 543];
+let rightLeg = [652, 690, 728, 766];
+let leftArm = [464, 500, 537];
+let leftLeg = [650, 686, 722, 758];
+
+let shapeArr = [head, torso, leftLeg, rightLeg, leftArm, rightArm];
+   
+function createShape(input, pixelColor) {
+	shape = shapeArr[input];
+
+	for (i=0; i<shape.length; i++) {
+    	id = 'P' + shape[i];
+    	document.getElementById(id).style.background = pixelColor;        
+    }
+   
+}
+
+// Create Cover //
+function createCover() {
+	createLines();
+    createShape(0, "white");
+    createShape(1, "white");
+    createShape(2, "white");
+    createShape(3, "white");
+    createShape(4, "white");
+    createShape(5, "white");
+}
+
+// Set Variables //
+var hangman;
+createPixels();
+createCover();
+
+function updateHangman() {
+    document.getElementById("pixelContainer").innerHTML = hangman;
+	numWrong = games[currentScreen].guess;
+    pixelColor = "white";
+    
+    if (games[currentScreen].win == "Win") {
+    	pixelColor = "green"; 
+    } else if (games[currentScreen].win == "Lose") {
+    	pixelColor = "#AA0404"
+    }
+    
+    if (numWrong == 1) {
+       createShape(0, pixelColor);    
+    }
+    if (numWrong == 2) {
+       createShape(0, pixelColor);    
+       createShape(1, pixelColor);    
+    }
+    if (numWrong == 3) {
+       createShape(0, pixelColor);    
+       createShape(1, pixelColor);
+       createShape(2, pixelColor);    
+    }
+    if (numWrong == 4) {
+       createShape(0, pixelColor);    
+       createShape(1, pixelColor);
+       createShape(2, pixelColor);
+       createShape(3, pixelColor);
+    }
+    if (numWrong == 5) {
+       createShape(0, pixelColor);    
+       createShape(1, pixelColor);
+       createShape(2, pixelColor);
+       createShape(3, pixelColor);
+       createShape(4, pixelColor);
+    }
+    if (numWrong == 6) {
+       createShape(0, "red");   
+       createShape(1, "red");
+       createShape(2, "red");
+       createShape(3, "red");
+       createShape(4, "red");
+       createShape(5, "red");
+    }
+}
+
+
+
+
+
+
+
+
+// Testing //
+function decode() {
+    input = document.getElementById("fname").value; 
+	document.getElementById("fname").value = toLetters(input);     
+}
+
+function code() {
+    input = document.getElementById("fname").value; 
+	document.getElementById("fname").value = toSymbols(input);     
+}
+
+function test() {
+	let emojis = document.getElementById("code").innerText;
+    let emojisArray = Array.from(emojis);
+    
+    document.getElementById("fname").value = emojis;
+
+
+}
+
+</script>
+
+</body>
+</html>
