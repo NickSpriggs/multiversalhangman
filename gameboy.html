@@ -138,6 +138,13 @@
 	display: none;
 }
 
+.pill {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/stock-vector-medicine-pill-bottle-container-child-resistant-pharamcy-storage-amber-orange-bit-pixel-art-2029148558_orig.png"); 
+    background-size: cover;
+    height: 30px;
+    width: 30px;
+}
+
 </style>
 
 <div class="gameboy">
@@ -155,7 +162,7 @@
         </div>
         <div class="bottomSectionL">
         	<div style="float:left;">Start</div>
-            <div class="dot small" onclick="startGame()"></div>
+            <div class="dot small" onclick="startGame2()"></div>
             <br>
         	<div style="float:left;">Edit.</div>
             <div class="dot small" onclick="toggleHiding()"></div>
@@ -193,14 +200,14 @@ let boundary = makeBoundary();
 let objects = [];
 
 let direction = "down";
-let player = 55;
+let player = 25;
 
 let enemy = 51;
 
 function startGame() {
 	makePixels();
     move(10);
-    // Temp //
+    // Beta //
     toggle();
 }
 
@@ -238,6 +245,12 @@ function move(input) {
       } else if (input == 10) {
       	  direction = "down";        
       }
+      
+      /// Temporary Code (For Show) /// 
+      if (player == pill) {
+      	createPill();
+      }
+	  /// Above is Temporary Code (For Show) ///
       
       document.getElementById("P" + player).innerHTML = '<div class="' + 
       direction + '">' + player +'</div>';        
@@ -316,6 +329,29 @@ function toggleHiding() {
 		hiding.style.display = "none";
     }
 }
+
+/// Temporary Code (For Show) ///
+let pill = 1;
+function createPill() {     
+     while (boundary.includes(pill) || pill == player) {
+		pill = Math.floor(Math.random() * 101);
+     }
+
+	 document.getElementById("P" + pill).innerHTML = '<div class="' + 
+    'pill' + '">' + '</div>'; 
+}
+
+function startGame2() {
+	makePixels();
+    move(10);
+    toggle();
+    
+    createPill();
+    document.getElementById("game").style.backgroundImage = "url('https://i.pinimg.com/originals/46/86/8d/46868d9c6d9c38a97762c72cac6138c2.png')"; 
+    document.getElementById("game").style.backgroundSize = 'cover';
+
+}
+//Added pill class, altered move(), and create function in temp code area 
 
 </script>
 
