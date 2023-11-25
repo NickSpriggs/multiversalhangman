@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<body>
+<style>
+
+#game {
+	margin-top: 25px;
+	height: 350px;
+    width: 350px;
+    background-color: lightgrey;
+    float: left;
+}
+
+.pixel {
+	height: 35px;
+    width: 35px;
+    float: left;
+}
+
+.background {
+	background-size: contain;
+	background-repeat: no-repeat;
+    height: 35px;
+    width: 35px;
+}
+
+.orginal-left {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/orginal-l_orig.png"); 
+}
+
+.orginal-right {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/orginal-r_orig.png"); 
+}
+
+.orginal-up {
+    background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/orginal-back_orig.png"); 
+}
+
+.orginal-down {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/orginal_orig.png"); 
+}
+
+.red-left {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/red-l_orig.png"); 
+}
+
+.red-right {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/red-r_orig.png"); 
+}
+
+.red-up {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/red-back_orig.png"); 
+}
+
+.red-down {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/red_orig.png"); 
+}
+
+.blue-left {
+    background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/blue-l_orig.png"); 
+}
+
+.blue-right {
+    background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/blue-r_orig.png"); 
+}
+
+.blue-up {
+    background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/blue-back_orig.png"); 
+}
+
+.blue-down {
+    background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/blue_orig.png"); 
+}
+
+.green-left {
+    background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/green-l_orig.png"); 
+}
+
+.green-right {
+    background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/green-r_orig.png"); 
+}
+
+.green-up {
+    background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/green-back_orig.png"); 
+}
+
+.green-down {
+    background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/green_orig.png"); 
+}
+
+.blue {
+	background-color: blue;
+    height: 30px;
+    width: 30px;
+}
+
+.black {
+	background-color: transparent;
+}
+
+.gameboy {
+    height: 600px;
+    width: 450px;
+    background-color: #32127A;
+}
+
+.half {
+    height: 100px;
+    width: 205px;
+    float: left;
+    background-color: #32127A;
+ 
+    touch-action: manipulation;	
+}
+
+.keySectionL {
+	margin-top: 70px;
+	margin-left: 55px; 
+    
+    height:100px;
+    width: 100px;
+}
+
+.keySectionR {
+	margin-top: 70px;
+	margin-left: 55px; 
+    
+    height:100px;
+    width: 120px;
+}
+
+.bottomSection {
+    height:50px;
+    width: 175px;
+    padding-top: 135px;
+    padding-left: 155px;
+    color: lightgrey;
+}
+
+.key {
+    height:33px;
+    width: 33px;
+    float: left;
+    background-color: lightgrey;
+    text-align: center;
+  	font-size: 30px;
+    color: grey;
+
+    touch-action: manipulation;
+
+}
+
+.kp {
+	cursor: pointer;
+}
+
+.dot {
+  height: 45px;
+  width: 45px;
+  background-color: lightgrey;
+  color: grey;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  font-size: 37px;
+  float: left;
+  cursor: pointer;
+  
+  touch-action: manipulation;
+
+}
+
+.small {
+  height: 15px;
+  width: 15px;
+  margin-left: 1px;
+}
+
+#hiding {
+	display: none;
+}
+
+
+</style>
+
+<div class="gameboy">
+	<div style="float: left; width: 45px; height: 50px;"></div>
+	<div id="game"></div>
+    
+    <div class="half">
+    <div class="keySectionL">
+		<div class="key" style="background-color: #32127A"></div>
+		<div class="key kp" onclick="move(-10)"></div>
+        <div class="key" style="background-color: #32127A"></div>
+		<div class="key kp" onclick="move(-1)"></div>
+        <div class="key">O</div>
+		<div class="key kp" onclick="move(1)"></div>
+        <div class="key" style="background-color: #32127A"></div>
+		<div class="key kp" onclick="move(10)"></div>
+        <div class="key" style="background-color: #32127A"></div>
+    </div>
+    </div>
+    
+    <div class="half">
+    <div class="keySectionR">
+        <div class="dot" style="margin-top: 20px"
+        onclick="">B</div>
+        <div class="dot" style="margin-left: 20px"
+        onclick="changeHat()">A</div>
+    </div> 
+    </div>
+    
+    <div class="bottomSection">
+        <div style="float:left;">Start</div>
+        <div class="dot small" onclick="startGame()"></div>
+        <div style="float:left; padding-left: 10px">Edit</div>
+        <div class="dot small" onclick="toggleHiding()"></div>
+    </div>
+</div>
+
+
+<div id="hiding">
+
+<button onclick="startGame()">Start</button>
+
+
+<p id="myText"></p>
+
+<button onclick="showInfo()">Show Info</button>
+<button onclick="toggle()">Toggle Numbering</button>
+<button onclick="makeEnemy()">Create Enemy</button>
+<br>
+<br>
+
+</div>
+
+<script>
+
+let boundary = makeBoundary();
+let objects = [];
+let direction = "";
+let hatColor = "orginal";
+
+let color = ["red", "blue", "green"];
+let colorCounter = -1;
+
+let player = 25;
+let enemy = 51;
+
+function startGame() {
+	makePixels();
+    move(10);
+    // Beta //
+    document.getElementById("game").style.backgroundImage = 
+    "url('http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/grave_orig.png')"; 
+    document.getElementById("game").style.backgroundSize = 'contain';
+    
+    toggle();
+}
+
+function makePixels() {
+	let gameSpace = document.getElementById("game");  
+    gameSpace.innerHTML = "";
+    
+    for (i=0; i<100; i++) {
+    	let pixel = "pixel";
+        
+    	if (boundary.includes(i) || objects.includes(i)) {
+        	pixel += " black";
+        }
+
+  		gameSpace.innerHTML += '<div id="P' + i + '" class="' + pixel + 
+        '">' + i +'</div>';
+    }
+}
+
+
+function move(input) {     
+    if (check(input)) { 
+      document.getElementById("P" + player).innerHTML = player;
+
+      player += input;
+            
+      if (input == -1) {
+      	  direction = "left";  
+      } else if (input == 1) {
+          direction = "right";  
+      } else if (input == -10) {
+      	  direction = "up";        
+      } else if (input == 10) {
+      	  direction = "down";        
+      }
+      
+      
+      document.getElementById("P" + player).innerHTML = '<div class="' + 
+      "background " + hatColor + "-" + direction + '">' + player +'</div>';        
+    }
+}
+
+function check(input) {
+	if (!boundary.includes(player + input) && 
+    !objects.includes(player + input)) {
+ 		return true;   
+    } else {
+    	return false;
+    }
+}
+
+function makeEnemy() {
+	OGenemy = enemy;
+    
+	if (player > enemy) {
+    	if (player.toString()[0] != enemy.toString()[0]) {
+        	enemy += 10;
+        } else {
+            enemy += 1;        
+        }
+    } else if (player < enemy) {
+    	if (enemy.toString()[0] != player.toString()[0]) {
+        	enemy -= 10;
+        } else {
+            enemy -= 1;        
+        }
+    } 
+    
+    document.getElementById("P" + OGenemy).innerHTML = OGenemy; 
+    
+	document.getElementById("P" + enemy).innerHTML = '<div class="' + 
+    'blue' + '">' + enemy +'</div>';    
+}
+
+//setInterval(makeEnemy, 500);
+
+
+function makeBoundary() {
+	let arr =  [];
+	 a = specialForLoop(0, 9, 1);
+     b = specialForLoop(0, 90, 10);
+     c = specialForLoop(9, 99, 10);
+     d = specialForLoop(90, 99, 1);
+     
+     arr = a.concat(b).concat(c).concat(d);
+     return arr;
+
+}
+
+function specialForLoop(vOne, vTwo, vThree) {
+	let arr = [];
+	for (i=vOne; i<=vTwo; i+=vThree) {
+    	arr.push(i);
+    }
+    return arr;
+}
+
+function changeHat() {
+	if (colorCounter < 2) {
+		colorCounter++;
+    } else {
+    	colorCounter = 0;
+    }
+    
+    hatColor = color[colorCounter];
+    
+    document.getElementById("P" + player).innerHTML = '<div class="' + 
+    "background " + hatColor + "-" + direction + '">' + player +'</div>'; 
+}
+
+function attack() {
+
+}
+
+function toggle() {
+	let gameSpace = document.getElementById("game");  
+	if (gameSpace.style.color == "transparent") {
+		gameSpace.style.color = "black";
+    } else {
+		gameSpace.style.color = "transparent";
+    }
+}
+
+function toggleHiding() {
+	let hiding = document.getElementById("hiding");  
+	if (hiding.style.display == "none") {
+		hiding.style.display = "inline-block";
+    } else {
+		hiding.style.display = "none";
+    }
+}
+
+function showInfo() {
+	document.getElementById("myText").innerText = "Hat Color: " + hatColor +
+    "\n" + "Direction: " + direction + "\n" + "Position: " + player;
+}
+
+</script>
+
+</body>
+</html>
