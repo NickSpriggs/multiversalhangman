@@ -88,6 +88,31 @@
     background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/green_orig.png"); 
 }
 
+.attack-red {
+    height: 35px;
+    width: 35px;
+    background-size: contain;
+    background-image: url("https://static.vecteezy.com/system/resources/previews/027/190/808/original/pixel-art-fire-icon-png.png");
+}
+
+.attack-blue {
+    height: 35px;
+    width: 35px;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    background-image: url("https://www.freepnglogos.com/uploads/water-drop-png/download-vector-drop-water-drop-water-download-17.png");
+}
+
+.attack-green {
+    height: 35px;
+    width: 35px;
+    background-size: cover;
+    background-image: url("https://static.vecteezy.com/system/resources/previews/013/743/345/original/pixel-art-tree-icon-png.png")
+}
+
+/*  */
+
 .blue {
 	background-color: blue;
     height: 30px;
@@ -132,8 +157,8 @@
 .bottomSection {
     height:50px;
     width: 175px;
-    padding-top: 135px;
-    padding-left: 155px;
+    padding-top: 560px;
+    padding-left: 172px;
     color: lightgrey;
 }
 
@@ -204,7 +229,7 @@
     <div class="half">
     <div class="keySectionR">
         <div class="dot" style="margin-top: 20px"
-        onclick="">B</div>
+        onclick="attack()">B</div>
         <div class="dot" style="margin-left: 20px"
         onclick="changeHat()">A</div>
     </div> 
@@ -366,7 +391,38 @@ function changeHat() {
 }
 
 function attack() {
-
+	// absolute left is until = ([0]player) x 10 
+    // absolute right is until = ([0]player + 1) x 10
+    // absolute down is just until < 0
+    // absolute up is just until > 100
+    
+    let target = 0;
+    let movement = 0;
+    let end = 0;
+    
+    if (direction == "left") {
+    	target = player - 1;
+        movement = -1;
+        //end = ([0]player) x 10;
+    }
+    if (direction == "right") {
+    	target = player + 1;
+        movement = 1;
+        //end = ([0]player + 1) x 10;
+    }
+    if (direction == "up") {
+    	target = player - 10;
+        movement = -10;
+        end = 100;
+    }
+    if (direction == "down") {
+    	target = player + 10;
+        movement = 10;
+        end = 0;
+    }
+     
+	document.getElementById("P" + target).innerHTML = '<div class="' + 
+    "attack-" + hatColor + '">' + target +'</div>'
 }
 
 function toggle() {
