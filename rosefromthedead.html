@@ -151,7 +151,7 @@
 }
 
 .gameboy {
-    height: 650px;
+    height: 670px;
     width: 450px;
     background-color: #32127A;
 }
@@ -185,7 +185,7 @@
     height:50px;
     width: 175px;
     padding-top: 610px;
-    padding-left: 172px;
+    padding-left: 162px;
     color: lightgrey;
 }
 
@@ -224,8 +224,8 @@
 
 .small {
   height: 15px;
-  width: 15px;
-  margin-left: 1px;
+  width: 35px;
+  margin-left: 15px;
 }
 
 #hiding {
@@ -263,10 +263,12 @@
     </div>
     
     <div class="bottomSection">
-        <div style="float:left;">Start</div>
         <div class="dot small" onclick="startGame()"></div>
-        <div style="float:left; padding-left: 10px">Edit</div>
         <div class="dot small" onclick="toggleHiding()"></div>
+        <br>
+        <div style="float:left; padding-left: 18px">Start</div>
+        <div style="float:left; padding-left: 21px">Edit</div>
+        
     </div>
 </div>
 
@@ -417,39 +419,44 @@ function changeHat() {
     "background " + hatColor + "-" + direction + '">' + player +'</div>'; 
 }
 
-function attack() {
-	// absolute left is until = ([0]player) x 10 
-    // absolute right is until = ([0]player + 1) x 10
-    // absolute down is just until < 0
-    // absolute up is just until > 100
-    
+function attack() {    
     let target = 0;
     let movement = 0;
-    let end = 0;
+    let end = player.toString().substring(1, 0);
     
     if (direction == "left") {
     	target = player - 1;
         movement = -1;
-        //end = ([0]player) x 10;
+        
+        end = parseInt(end) * 10;
     }
     if (direction == "right") {
     	target = player + 1;
         movement = 1;
-        //end = ([0]player + 1) x 10;
+        
+        end = ((parseInt(end) + 1) * 10) - 1;
     }
     if (direction == "up") {
     	target = player - 10;
         movement = -10;
-        end = 100;
+        
+        end = player - (parseInt(end) * 10);
     }
     if (direction == "down") {
     	target = player + 10;
         movement = 10;
-        end = 0;
+        
+        end = ((9 - parseInt(end)) * 10) + player;
     }
-     
-	document.getElementById("P" + target).innerHTML = '<div class="' + 
-    "attack-" + hatColor + '">' + target +'</div>'
+    
+    
+    
+    while (target != end) {
+        document.getElementById("P" + target).innerHTML = '<div class="' + 
+        "attack-" + hatColor + '">' + target +'</div>';    
+    
+    	target += movement;
+    }
 }
 
 function toggle() {
