@@ -231,23 +231,42 @@
 	display: none;
 }
 
+#selectionScreen {
+	height: 65px;
+    width: 120px;
+    
+    position: absolute;
+    top: 245px;
+    left: 105px;
+    
+    display: none;
+    text-align: left;
+    color: white;
+    font-size: 20px;
+}
 
 </style>
 
 <div class="gameboy">
 	<div style="float: left; width: 25px; height: 50px;"></div>
+    
 	<div id="game"></div>
+    
+    <div id="selectionScreen">
+    	<div id="start">Start Game</div>
+        <div id="howToPlay">How To Play</div>
+    </div>
     
     <div class="half">
     <div class="keySectionL">
 		<div class="key" style="background-color: transparent"></div>
-		<div class="key kp" onclick="move(-10)"></div>
+		<div class="key kp" onclick="up()"></div>
         <div class="key" style="background-color: transparent"></div>
 		<div class="key kp" onclick="move(-1)"></div>
         <div class="key">O</div>
 		<div class="key kp" onclick="move(1)"></div>
         <div class="key" style="background-color: transparent"></div>
-		<div class="key kp" onclick="move(10)"></div>
+		<div class="key kp" onclick="down()"></div>
         <div class="key" style="background-color: transparent"></div>
     </div>
     </div>
@@ -257,12 +276,12 @@
         <div class="dot" style="margin-top: 40px"
         onclick="attack()">B</div>
         <div class="dot" style="margin-left: 10px"
-        onclick="changeHat()">A</div>
+        onclick="aButton()">A</div>
     </div> 
     </div>
     
     <div class="bottomSection">
-        <div class="dot small" onclick="startGame()"></div>
+        <div class="dot small" onclick="homeScreen()"></div>
         <div class="dot small" onclick="toggleHiding()"></div>
         <br>
         <div style="float:left; padding-left: 18px">Start</div>
@@ -303,12 +322,17 @@ let colorCounter = -1;
 let player = 25;
 let enemy = 51;
 
+// Home Screen and Rule Screen
+selectionScreen = document.getElementById("selectionScreen");
+start = document.getElementById("start");
+howToPlay = document.getElementById("howToPlay");
+cursor = "";
+
 function startGame() {
 	makePixels();
     move(10);
     // Beta //
-    document.getElementById("game").style.backgroundImage = 
-    "url('http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/grave_orig.png')"; 
+    document.getElementById("game").style.backgroundImage =    "url('http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/grave_orig.png')"; 
     document.getElementById("game").style.backgroundSize = 'contain';
     
     toggle();
@@ -318,6 +342,46 @@ function homeScreen() {
 	document.getElementById("game").style.backgroundImage = 
     "url('http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/home-screen_orig.png')"; 
     document.getElementById("game").style.backgroundSize = 'cover';
+    
+   	selectionScreen.style.display = "inline-block"; 
+    start.style.color = "gold";
+    cursor = "start";
+}
+
+function up() {
+	if (cursor == "howToPlay") {
+    	start.style.color = "gold";
+        howToPlay.style.color = "white";
+        
+    	cursor = "start";
+    } else if (cursor == "playing") {
+    	move(-10);
+    }
+}
+
+function down() {
+	if (cursor == "start") {
+    	start.style.color = "white";
+        howToPlay.style.color = "gold";
+        
+    	cursor = "howToPlay";
+    } else if (cursor == "playing") {
+    	move(10);
+    }
+}
+
+function aButton() {
+	if (cursor == "start") {
+    	selectionScreen.style.display = "none";
+        
+        cursor = "playing";
+    	startGame();
+    } else if (cursor == "playing") {
+    	changeHat();
+    } else if (cursor == "howToPlay") {
+    	selectionScreen.style.display = "none";
+        // Bring up rules screen //
+    }
 }
 
 function makePixels() {
@@ -427,6 +491,16 @@ function changeHat() {
     "background " + hatColor + "-" + direction + '">' + player +'</div>'; 
 }
 
+function rotateDirection(num) { 
+    if (direction == "down") {
+        document.getElementById("P" + num).style.transform = 'rotate(90deg)';
+    } else if (direction == "left") {
+        document.getElementById("P" + num).style.transform = 'rotate(180deg)';
+    } else if (direction == "up") {
+        document.getElementById("P" + num).style.transform = 'rotate(-90deg)';
+    }
+}
+
 function attack() {    
     let target = 0;
     let movement = 0;
@@ -471,7 +545,7 @@ function attack() {
     	// creates attacks and determines next spot
         document.getElementById("P" + target).innerHTML = '<div class="' + 
         "attack-" + element + '">' + target +'</div>';   
-                
+                        
         target += movement;
             
     	// Stops interval if reaching end:
@@ -507,7 +581,8 @@ function toggleHiding() {
 
 function showInfo() {
 	document.getElementById("myText").innerText = "Hat Color: " + hatColor +
-    "\n" + "Direction: " + direction + "\n" + "Position: " + player;
+    "\n" + "Direction: " + direction + "\n" + "Position: " + player
+    + "\n" + "Cursor: " + cursor;
 }
 
 </script>
