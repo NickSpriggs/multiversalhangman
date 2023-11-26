@@ -4,11 +4,12 @@
 <style>
 
 #game {
-	margin-top: 25px;
+	margin-top: 35px;
 	height: 350px;
     width: 350px;
     background-color: lightgrey;
     float: left;
+    border: solid black 15px;
 }
 
 .pixel {
@@ -108,10 +109,36 @@
     height: 35px;
     width: 35px;
     background-size: cover;
-    background-image: url("https://static.vecteezy.com/system/resources/previews/013/743/345/original/pixel-art-tree-icon-png.png")
+    background-image: url("https://static.vecteezy.com/system/resources/previews/013/743/345/original/pixel-art-tree-icon-png.png");
 }
 
-/*  */
+/* enemies */
+
+.red-ghost {
+    height: 35px;
+    width: 35px;
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/red-ghost_orig.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.blue-ghost {
+    height: 35px;
+    width: 35px;
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/blue-ghost_orig.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.green-ghost {
+    height: 35px;
+    width: 35px;
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/green-ghost_orig.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* enemies */
 
 .blue {
 	background-color: blue;
@@ -124,7 +151,7 @@
 }
 
 .gameboy {
-    height: 600px;
+    height: 650px;
     width: 450px;
     background-color: #32127A;
 }
@@ -139,7 +166,7 @@
 }
 
 .keySectionL {
-	margin-top: 70px;
+	margin-top: 40px;
 	margin-left: 55px; 
     
     height:100px;
@@ -147,7 +174,7 @@
 }
 
 .keySectionR {
-	margin-top: 70px;
+	margin-top: 50px;
 	margin-left: 55px; 
     
     height:100px;
@@ -157,7 +184,7 @@
 .bottomSection {
     height:50px;
     width: 175px;
-    padding-top: 560px;
+    padding-top: 610px;
     padding-left: 172px;
     color: lightgrey;
 }
@@ -209,7 +236,7 @@
 </style>
 
 <div class="gameboy">
-	<div style="float: left; width: 45px; height: 50px;"></div>
+	<div style="float: left; width: 35px; height: 50px;"></div>
 	<div id="game"></div>
     
     <div class="half">
@@ -351,7 +378,7 @@ function makeEnemy() {
     document.getElementById("P" + OGenemy).innerHTML = OGenemy; 
     
 	document.getElementById("P" + enemy).innerHTML = '<div class="' + 
-    'blue' + '">' + enemy +'</div>';    
+    'blue-ghost' + '">' + enemy +'</div>';    
 }
 
 //setInterval(makeEnemy, 500);
