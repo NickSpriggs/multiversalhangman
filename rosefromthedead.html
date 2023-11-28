@@ -245,6 +245,15 @@
     font-size: 20px;
 }
 
+#pressA {
+    position: absolute;
+    top: 235px;
+    left: 185px;
+    color: white;
+    
+    display: none;
+}
+
 </style>
 
 <div class="gameboy">
@@ -256,6 +265,8 @@
     	<div id="start">Start Game</div>
         <div id="howToPlay">How To Play</div>
     </div>
+    
+    <div id="pressA">Press A to Play</div>
     
     <div class="half">
     <div class="keySectionL">
@@ -348,6 +359,12 @@ function homeScreen() {
     cursor = "start";
 }
 
+function howTo() {
+	document.getElementById("game").style.backgroundImage = 
+    "url('http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/rule-screen_orig.png')"; 
+    document.getElementById("game").style.backgroundSize = 'cover';
+}
+
 function up() {
 	if (cursor == "howToPlay") {
     	start.style.color = "gold";
@@ -375,13 +392,25 @@ function aButton() {
     	selectionScreen.style.display = "none";
         
         cursor = "playing";
+        showText();
     	startGame();
     } else if (cursor == "playing") {
+    	hideText();
     	changeHat();
     } else if (cursor == "howToPlay") {
     	selectionScreen.style.display = "none";
-        // Bring up rules screen //
+        howTo();
     }
+}
+
+function showText() {
+	pressA = document.getElementById("pressA");    
+    pressA.style.display = "inline-block";
+}
+
+function hideText() {
+	pressA = document.getElementById("pressA");    
+    pressA.style.display = "none";
 }
 
 function makePixels() {
