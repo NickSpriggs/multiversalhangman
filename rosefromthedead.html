@@ -172,6 +172,7 @@
     
     height:140px;
     width: 140px;
+    
 }
 
 .keySectionR {
@@ -179,6 +180,8 @@
     margin-left: 48px;
     height: 100px;
     width: 184px;
+    
+    touch-action: manipulation;
 }
 
 .bottomSection {
@@ -187,6 +190,8 @@
     padding-top: 630px;
     padding-left: 162px;
     color: lightgrey;
+    
+    touch-action: manipulation;
 }
 
 .key {
@@ -520,12 +525,12 @@ function changeHat() {
     "background " + hatColor + "-" + direction + '">' + player +'</div>'; 
 }
 
-function rotateDirection(num) { 
-    if (direction == "up") {
+function rotateDirection(num, dir) { 
+    if (dir == "up") {
         document.getElementById("A" + num).style.transform = 'rotate(90deg)';
-    } else if (direction == "right") {
+    } else if (dir == "right") {
         document.getElementById("A" + num).style.transform = 'rotate(180deg)';
-    } else if (direction == "down") {
+    } else if (dir == "down") {
         document.getElementById("A" + num).style.transform = 'rotate(-90deg)';
     }
 }
@@ -564,6 +569,8 @@ function attack() {
     // every half second
     let element = hatColor;
     let ogTarget = target;
+    let ogDirection = direction;
+    
     var attack = setInterval(function() {
     	// deletes previous attack once interval begins
     	if (target != ogTarget) {
@@ -571,13 +578,14 @@ function attack() {
         	document.getElementById("P" + previous).innerHTML = '';       
         }
     
-    	// creates attacks and determines next spot
+    	// creates attacks 
         document.getElementById("P" + target).innerHTML = '<div id="A' + target + 
         '" class="' + "attack-" + element + '">' + target +'</div>';   
         
         //rotates direction of internal attack div
-        rotateDirection(target);
+        rotateDirection(target, ogDirection);
         
+        // determines next spot
         target += movement;
             
     	// Stops interval if reaching end:
