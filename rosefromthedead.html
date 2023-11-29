@@ -559,7 +559,8 @@ function createGhost() {
     
     	// Stops interval if kill becomes active:
     	if (kill == true) {
-        	clearInterval(ghost);            
+        	clearInterval(ghost);  
+		kill = false;
         }        
     }, 500);    
 }
