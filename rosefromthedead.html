@@ -302,6 +302,7 @@
         <br>
         <div style="float:left; padding-left: 18px">Start</div>
         <div style="float:left; padding-left: 21px">Edit</div>
+
         
     </div>
 </div>
@@ -316,7 +317,8 @@
 
 <button onclick="showInfo()">Show Info</button>
 <button onclick="toggle()">Toggle Numbering</button>
-<button onclick="makeEnemy()">Create Enemy</button>
+<button onclick="createGhost()">Create Ghost</button>
+<button onclick="clearKill()">Clear Kill</button>
 
 <button onclick="homeScreen()">Home Screen</button>
 
@@ -331,12 +333,13 @@ let boundary = makeBoundary();
 let objects = [];
 let direction = "";
 let hatColor = "orginal";
+let round = 1;
 
 let color = ["red", "blue", "green"];
 let colorCounter = -1;
 
 let player = 25;
-let enemy = 51;
+let enemy = 85;
 
 // Home Screen and Rule Screen
 selectionScreen = document.getElementById("selectionScreen");
@@ -399,9 +402,13 @@ function aButton() {
         cursor = "playing";
         showText();
     	startGame();
-    } else if (cursor == "playing") {
+    } else if (cursor == "playing" && round == 1) {
     	hideText();
     	changeHat();
+        createGhost();
+        round++;
+    } else if (cursor == "playing") {
+    	changeHat();    
     } else if (cursor == "howToPlay") {
     	selectionScreen.style.display = "none";
         howTo();
@@ -466,32 +473,6 @@ function check(input) {
     }
 }
 
-function makeEnemy() {
-	OGenemy = enemy;
-    
-	if (player > enemy) {
-    	if (player.toString()[0] != enemy.toString()[0]) {
-        	enemy += 10;
-        } else {
-            enemy += 1;        
-        }
-    } else if (player < enemy) {
-    	if (enemy.toString()[0] != player.toString()[0]) {
-        	enemy -= 10;
-        } else {
-            enemy -= 1;        
-        }
-    } 
-    
-    document.getElementById("P" + OGenemy).innerHTML = OGenemy; 
-    
-	document.getElementById("P" + enemy).innerHTML = '<div class="' + 
-    'blue-ghost' + '">' + enemy +'</div>';    
-}
-
-//setInterval(makeEnemy, 500);
-
-
 function makeBoundary() {
 	let arr =  [];
 	 a = specialForLoop(0, 9, 1);
@@ -524,6 +505,69 @@ function changeHat() {
     document.getElementById("P" + player).innerHTML = '<div class="' + 
     "background " + hatColor + "-" + direction + '">' + player +'</div>'; 
 }
+
+// ------------Combat-------------
+
+let uniTarget = 0;
+let kill = false;
+
+// Checks to see if enemy has been killed
+setInterval(function() {
+	if (uniTarget == enemy) {
+    	kill = true;
+    }
+}, 10);
+
+function clearKill() {
+	kill = false;
+}
+
+function chooseType() {
+	arr = ["red-ghost", "blue-ghost", "green-ghost"];
+    randNum = Math.floor(Math.random() * 3);
+    
+	return arr[randNum];
+}
+
+function createGhost() {
+	let type = chooseType();
+    var ghost = setInterval(function() {
+    
+		if (kill == false) {            
+        OGenemy = enemy;
+
+        if (player > enemy) {
+            if (player.toString()[0] != enemy.toString()[0]) {
+                enemy += 10;
+            } else {
+                enemy += 1;        
+            }
+        } else if (player < enemy) {
+            if (enemy.toString()[0] != player.toString()[0]) {
+                enemy -= 10;
+            } else {
+                enemy -= 1;        
+            }
+        } 
+        
+
+        document.getElementById("P" + OGenemy).innerHTML = OGenemy; 
+
+        document.getElementById("P" + enemy).innerHTML = '<div class="' + 
+        type + '">' + enemy +'</div>'; 
+        }
+    
+    	// Stops interval if kill becomes active:
+    	if (kill == true) {
+        	clearInterval(ghost);
+            
+            kill = false;
+        }        
+    }, 500);    
+}
+
+
+// -------------------
 
 function rotateDirection(num, dir) { 
     if (dir == "up") {
@@ -580,21 +624,33 @@ function attack() {
     
     	// creates attacks 
         document.getElementById("P" + target).innerHTML = '<div id="A' + target + 
-        '" class="' + "attack-" + element + '">' + target +'</div>';   
+        '" class="' + "attack-" + element + '">' + target +'</div>'; 
         
         //rotates direction of internal attack div
         rotateDirection(target, ogDirection);
+
+        // updates universal target variable
+        uniTarget = target;
         
         // determines next spot
         target += movement;
-            
+        
+        // Stops interval if hit target
+        if (kill == true) {
+        	clearInterval(attack);
+            previous = target - movement;
+            document.getElementById("P" + previous).innerHTML = ''; 
+            uniTarget = 0;
+        }
+        
     	// Stops interval if reaching end:
     	if (target == end) {
         	clearInterval(attack);
             
             setTimeout(function() {
                 previous = target - movement;
-                document.getElementById("P" + previous).innerHTML = '';   
+                document.getElementById("P" + previous).innerHTML = ''; 
+                uniTarget = 0;
             }, 200);
         }        
     }, 200);
