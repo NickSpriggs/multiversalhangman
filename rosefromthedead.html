@@ -94,7 +94,7 @@
     width: 35px;
     background-size: cover;
 
-    background-image: url("https://static.vecteezy.com/system/resources/previews/027/190/808/original/pixel-art-fire-icon-png.png");
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/fire_orig.png");
 }
 
 .attack-blue {
@@ -103,14 +103,14 @@
     background-size: contain;
     background-repeat: no-repeat;
 
-    background-image: url("https://www.freepnglogos.com/uploads/water-drop-png/download-vector-drop-water-drop-water-download-17.png");
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/water_orig.png");
 }
 
 .attack-green {
     height: 35px;
     width: 35px;
     background-size: cover;
-    background-image: url("https://static.vecteezy.com/system/resources/previews/013/743/345/original/pixel-art-tree-icon-png.png");
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/earth_orig.png");
 }
 
 /* enemies */
@@ -521,12 +521,12 @@ function changeHat() {
 }
 
 function rotateDirection(num) { 
-    if (direction == "down") {
-        document.getElementById("P" + num).style.transform = 'rotate(90deg)';
-    } else if (direction == "left") {
-        document.getElementById("P" + num).style.transform = 'rotate(180deg)';
-    } else if (direction == "up") {
-        document.getElementById("P" + num).style.transform = 'rotate(-90deg)';
+    if (direction == "up") {
+        document.getElementById("A" + num).style.transform = 'rotate(90deg)';
+    } else if (direction == "right") {
+        document.getElementById("A" + num).style.transform = 'rotate(180deg)';
+    } else if (direction == "down") {
+        document.getElementById("A" + num).style.transform = 'rotate(-90deg)';
     }
 }
 
@@ -572,9 +572,12 @@ function attack() {
         }
     
     	// creates attacks and determines next spot
-        document.getElementById("P" + target).innerHTML = '<div class="' + 
-        "attack-" + element + '">' + target +'</div>';   
-                        
+        document.getElementById("P" + target).innerHTML = '<div id="A' + target + 
+        '" class="' + "attack-" + element + '">' + target +'</div>';   
+        
+        //rotates direction of internal attack div
+        rotateDirection(target);
+        
         target += movement;
             
     	// Stops interval if reaching end:
