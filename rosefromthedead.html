@@ -23,6 +23,8 @@
 	background-repeat: no-repeat;
     height: 35px;
     width: 35px;
+    
+    margin-left: 4px;
 }
 
 .orginal-left {
@@ -261,6 +263,18 @@
     display: none;
 }
 
+.letter {
+    height: 20px;
+    width: 20px;
+    font-size: 15px;
+    text-align: center;
+    padding-top: 1px;
+    color: white;
+    
+    margin-top: 6px;
+    margin-left: 6px;
+}
+
 </style>
 
 <div class="gameboy">
@@ -321,6 +335,8 @@
 <button onclick="toggle()">Toggle Numbering</button>
 <button onclick="createGhost()">Create Ghost</button>
 <button onclick="clearKill()">Clear Kill</button>
+<button onclick="createLetter()">Create Letter</button>
+<button onclick="enemyPosition()"> create enemy number</button>
 
 <button onclick="homeScreen()">Home Screen</button>
 
@@ -336,12 +352,14 @@ let objects = [];
 let direction = "";
 let hatColor = "orginal";
 let round = 1;
+let code = ["H", "A", "P", "Y", "B", "I", "R", "T", "H", "D"];
 
 let color = ["red", "blue", "green"];
 let colorCounter = -1;
 
 let player = 25;
-let enemy = 85;
+let enemy = 100;
+let codeSpace = 100;
 
 // Home Screen and Rule Screen
 selectionScreen = document.getElementById("selectionScreen");
@@ -513,11 +531,16 @@ function changeHat() {
 let uniTarget = 0;
 let kill = false;
 
-// Checks to see if enemy has been killed
+// Checks to see if enemy has been killed 
+// Checks if player has letter
 setInterval(function() {
 	if (uniTarget == enemy) {
     	kill = true;
     }
+    if (player == codeSpace) {
+    	createGhost();
+        codeSpace = 100;
+    } 
 }, 10);
 
 function clearKill() {
@@ -532,7 +555,9 @@ function chooseType() {
 }
 
 function createGhost() {
-	let type = chooseType();
+	let type = chooseType();    
+    enemy = enemyPosition();
+    
     var ghost = setInterval(function() {
     
 		if (kill == false) {            
@@ -562,8 +587,11 @@ function createGhost() {
     	// Stops interval if kill becomes active:
     	if (kill == true) {
         	clearInterval(ghost);  
-		kill = false;
-	// Need code here to give enemy new position (can't be zero cause unitarget is)
+			kill = false;
+            
+            codeSpace = enemy;
+            enemy = 100;
+            createLetter();
         }        
     }, 500);    
 }
@@ -681,6 +709,29 @@ function showInfo() {
 	document.getElementById("myText").innerText = "Hat Color: " + hatColor +
     "\n" + "Direction: " + direction + "\n" + "Position: " + player
     + "\n" + "Cursor: " + cursor;
+}
+
+function createLetter() {
+	randNum = Math.floor(Math.random() * 9);
+	letter = code[randNum];
+        
+    setTimeout(function() { 
+      document.getElementById("P" + codeSpace).innerHTML = '<div class="' + 
+      "dot letter" + '">' + letter +'</div>'; 
+    }, 300,);
+}
+
+function enemyPosition() {
+	x = player;
+
+	area = [player - 1, player, player + 1, 
+    player - 9, player  - 10, player - 11,
+    player + 9, player + 10, player + 11];
+    
+    while (area.includes(x) || boundary.includes(x)) {
+    	x = Math.floor(Math.random() * 100);
+    }
+    return x;
 }
 
 </script>
