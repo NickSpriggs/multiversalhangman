@@ -280,7 +280,7 @@
 #letterSection {
     position: absolute;
     top: 70px;
-    left: 77px;
+    left: 125px;
     color: white;
     
     display: none;
@@ -288,8 +288,17 @@
 
 .letterBox {
 	float: left;
-    padding-left: 55px;
+    padding-left: 25px;
     
+}
+
+.scoreBox {
+	float: left;
+    border: solid black 1px;
+    background: white;
+    color: green;
+    width: 12px;
+    text-align: center;
 }
 
 </style>
@@ -377,7 +386,7 @@ let wordOne = "HAPPY";
 let wordOneArr = ["_", "_", "_", "_", "_"];
 let wordTwo = "BIRTHDAY";
 let wordTwoArr = ["_", "_", "_", "_", "_", "_", "_", "_"];
-let code = ["H", "A", "P", "Y", "B", "I", "R", "T", "H", "D"];
+let code = ["H", "A", "P", "Y", "B", "I", "R", "T", "D"];
 
 let color = ["red", "blue", "green"];
 let colorCounter = -1;
@@ -509,6 +518,11 @@ function move(input) {
       document.getElementById("P" + player).innerHTML = '<div class="' + 
       "background " + hatColor + "-" + direction + '">' + player +'</div>';        
     }
+    if (player == codeSpace) {
+    	updateLetters();
+    	createGhost();
+        codeSpace = 100;
+    }
 }
 
 function check(input) {
@@ -564,12 +578,7 @@ setInterval(function() {
 	if (uniTarget == enemy) {
     	kill = true;
     }
-    if (player == codeSpace) {
-    	updateLetters();
-    	createGhost();
-        codeSpace = 100;
-    } 
-}, 10);
+}, 5);
 
 function clearKill() {
 	kill = false;
@@ -586,36 +595,40 @@ function createGhost() {
 	let type = chooseType();    
     enemy = enemyPosition();
     
+    document.getElementById("myText").innerText += "I"; 
+
+    
     var ghost = setInterval(function() {
     
 		if (kill == false) {            
-        OGenemy = enemy;
+          OGenemy = enemy;
 
-        if (player > enemy) {
-            if (player.toString()[0] != enemy.toString()[0]) {
-                enemy += 10;
-            } else {
-                enemy += 1;        
-            }
-        } else if (player < enemy) {
-            if (enemy.toString()[0] != player.toString()[0]) {
-                enemy -= 10;
-            } else {
-                enemy -= 1;        
-            }
-        } 
-        
+          if (player > enemy) {
+              if (player.toString()[0] != enemy.toString()[0]) {
+                  enemy += 10;
+              } else {
+                  enemy += 1;        
+              }
+          } else if (player < enemy) {
+              if (enemy.toString()[0] != player.toString()[0]) {
+                  enemy -= 10;
+              } else {
+                  enemy -= 1;        
+              }
+          } 
 
-        document.getElementById("P" + OGenemy).innerHTML = OGenemy; 
 
-        document.getElementById("P" + enemy).innerHTML = '<div class="' + 
-        type + '">' + enemy +'</div>'; 
+          document.getElementById("P" + OGenemy).innerHTML = OGenemy; 
+
+          document.getElementById("P" + enemy).innerHTML = '<div class="' + 
+          type + '">' + enemy +'</div>'; 
         }
     
     	// Stops interval if kill becomes active:
     	if (kill == true) {
         	clearInterval(ghost);  
-			kill = false;        
+			kill = false;     
+            createLetter();
         }        
     }, 700); 
     // used to be 500
@@ -699,10 +712,9 @@ function attack() {
             
             codeSpace = enemy;
             enemy = 100;
-            createLetter();
         }
         
-    	// Stops interval if reaching end:
+    	// Stops interval if reaching end or letter:
     	if (target == end || target == codeSpace) {
         	clearInterval(attack);
             
@@ -710,6 +722,7 @@ function attack() {
                 previous = target - movement;
                 document.getElementById("P" + previous).innerHTML = ''; 
                 uniTarget = 0;
+                
             }, 200);
         }        
     }, 200);
@@ -737,25 +750,34 @@ function toggleHiding() {
 function showInfo() {
 	document.getElementById("myText").innerText = "Hat Color: " + hatColor +
     "\n" + "Direction: " + direction + "\n" + "Position: " + player
-    + "\n" + "Cursor: " + cursor + "\n Enemy: " + enemy;
+    + "\n" + "Cursor: " + cursor + "\n Enemy: " + enemy + "\n Kill:" + kill
+    + "\n Code: " + code + "\n Letter: " + codeSpace;
 }
 
 function createLetter() {
-	randNum = Math.floor(Math.random() * 9);
+	randNum = Math.floor(Math.random() * (code.length - 1));
 	currentLetter = code[randNum];
-         
-    document.getElementById("P" + codeSpace).innerHTML = '<div class="' + 
-    "dot letter" + '">' + currentLetter +'</div>'; 
+    
+    setTimeout(function() {
+      document.getElementById("P" + codeSpace).innerHTML = '<div class="' + 
+      "dot letter" + '">' + currentLetter +'</div>'; 
+    }, 200);
 }
 
 function enemyPosition() {
 	x = player;
 
-	area = [x - 18, x - 19, x - 20, x - 21, x - 22,
-    x - 1, x - 2, x, x + 1, x + 2, 
-    x - 8, x - 9, x - 10, x - 11, x - 12,
-    x + 8, x + 9, x + 10, x + 11, x + 12,
-    x + 18, x + 19, x + 20, x + 21, x + 22];
+	//area = [x - 18, x - 19, x - 20, x - 21, x - 22,
+    //x - 1, x - 2, x, x + 1, x + 2, 
+    //x - 8, x - 9, x - 10, x - 11, x - 12,
+    //x + 8, x + 9, x + 10, x + 11, x + 12,
+    //x + 18, x + 19, x + 20, x + 21, x + 22];
+    
+    area = [
+    x - 1, x, x + 1,
+    x - 9, x - 10, x - 11,
+    x + 9, x + 10, x + 11
+    ];
     
     while (area.includes(x) || boundary.includes(x)) {
     	x = Math.floor(Math.random() * 99);
@@ -765,8 +787,18 @@ function enemyPosition() {
 
 function showLetters() {
 	document.getElementById("letterSection").style.display = "inline-block";
-    document.getElementById("one").innerText= wordOneArr;
-    document.getElementById("two").innerText = wordTwoArr;
+    document.getElementById("one").innerHTML= toDisplay(wordOneArr);
+    document.getElementById("two").innerHTML = toDisplay(wordTwoArr);
+}
+
+function toDisplay(arr) {
+	let string = "";
+    
+    for (i=0; i<arr.length; i++) {
+    	string += '<div class="scoreBox">' + arr[i] + '</div>';
+    }
+
+	return string;
 }
 
 function updateArray(arr, index) {
@@ -775,7 +807,23 @@ function updateArray(arr, index) {
     for (i=0; i<arr.length; i++) {
     	if (i == index) {
         	replace.push(currentLetter);
+            
+            if (currentLetter == "P") {
+                replace.push(currentLetter);
+            	i++;
+            }
         } else {
+        	replace.push(arr[i]);
+        }
+    }
+    return replace;
+}
+
+function subtractFrom(arr, value) {
+	let replace = []
+    
+    for (i=0; i<arr.length; i++) {
+    	if (arr[i] != value) {
         	replace.push(arr[i]);
         }
     }
@@ -794,6 +842,7 @@ function updateLetters() {
     	wordTwoArr = updateArray(wordTwoArr, position);
     }
 
+	code = subtractFrom(code, currentLetter);
 	showLetters();
 }
 
