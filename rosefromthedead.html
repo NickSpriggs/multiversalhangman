@@ -277,6 +277,21 @@
     margin-left: 6px;
 }
 
+#letterSection {
+    position: absolute;
+    top: 70px;
+    left: 77px;
+    color: white;
+    
+    display: none;
+}
+
+.letterBox {
+	float: left;
+    padding-left: 55px;
+    
+}
+
 </style>
 
 <div class="gameboy">
@@ -290,6 +305,10 @@
     </div>
     
     <div id="pressA">Press A to Begin</div>
+    <div id="letterSection">
+    	<div id="one" class="letterBox"></div>
+        <div id="two" class="letterBox"></div>
+    </div>
     
     <div class="half">
     <div class="keySectionL">
@@ -354,11 +373,16 @@ let objects = [];
 let direction = "";
 let hatColor = "orginal";
 let round = 1;
+let wordOne = "HAPPY";
+let wordOneArr = ["_", "_", "_", "_", "_"];
+let wordTwo = "BIRTHDAY";
+let wordTwoArr = ["_", "_", "_", "_", "_", "_", "_", "_"];
 let code = ["H", "A", "P", "Y", "B", "I", "R", "T", "H", "D"];
 
 let color = ["red", "blue", "green"];
 let colorCounter = -1;
 
+let currentLetter = "";
 let player = 25;
 let enemy = 100;
 let codeSpace = 100;
@@ -376,6 +400,7 @@ function startGame() {
     document.getElementById("game").style.backgroundImage =    "url('http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/grave_orig.png')"; 
     document.getElementById("game").style.backgroundSize = 'contain';
     
+    showLetters();
     toggle();
 }
 
@@ -540,6 +565,7 @@ setInterval(function() {
     	kill = true;
     }
     if (player == codeSpace) {
+    	updateLetters();
     	createGhost();
         codeSpace = 100;
     } 
@@ -589,13 +615,10 @@ function createGhost() {
     	// Stops interval if kill becomes active:
     	if (kill == true) {
         	clearInterval(ghost);  
-			kill = false;
-            
-            codeSpace = enemy;
-            enemy = 100;
-            createLetter();
+			kill = false;        
         }        
-    }, 500);    
+    }, 700); 
+    // used to be 500
 }
 
 
@@ -672,11 +695,15 @@ function attack() {
         	clearInterval(attack);
             previous = target - movement;
             document.getElementById("P" + previous).innerHTML = ''; 
-            uniTarget = 0;            
+            uniTarget = 0;   
+            
+            codeSpace = enemy;
+            enemy = 100;
+            createLetter();
         }
         
     	// Stops interval if reaching end:
-    	if (target == end) {
+    	if (target == end || target == codeSpace) {
         	clearInterval(attack);
             
             setTimeout(function() {
@@ -710,31 +737,67 @@ function toggleHiding() {
 function showInfo() {
 	document.getElementById("myText").innerText = "Hat Color: " + hatColor +
     "\n" + "Direction: " + direction + "\n" + "Position: " + player
-    + "\n" + "Cursor: " + cursor;
+    + "\n" + "Cursor: " + cursor + "\n Enemy: " + enemy;
 }
 
 function createLetter() {
 	randNum = Math.floor(Math.random() * 9);
-	letter = code[randNum];
-        
-    setTimeout(function() { 
-      document.getElementById("P" + codeSpace).innerHTML = '<div class="' + 
-      "dot letter" + '">' + letter +'</div>'; 
-    }, 300,);
+	currentLetter = code[randNum];
+         
+    document.getElementById("P" + codeSpace).innerHTML = '<div class="' + 
+    "dot letter" + '">' + currentLetter +'</div>'; 
 }
 
 function enemyPosition() {
 	x = player;
 
-	area = [player - 1, player, player + 1, 
-    player - 9, player  - 10, player - 11,
-    player + 9, player + 10, player + 11];
+	area = [x - 18, x - 19, x - 20, x - 21, x - 22,
+    x - 1, x - 2, x, x + 1, x + 2, 
+    x - 8, x - 9, x - 10, x - 11, x - 12,
+    x + 8, x + 9, x + 10, x + 11, x + 12,
+    x + 18, x + 19, x + 20, x + 21, x + 22];
     
     while (area.includes(x) || boundary.includes(x)) {
-    	x = Math.floor(Math.random() * 100);
+    	x = Math.floor(Math.random() * 99);
     }
     return x;
 }
+
+function showLetters() {
+	document.getElementById("letterSection").style.display = "inline-block";
+    document.getElementById("one").innerText= wordOneArr;
+    document.getElementById("two").innerText = wordTwoArr;
+}
+
+function updateArray(arr, index) {
+	let replace = []
+    
+    for (i=0; i<arr.length; i++) {
+    	if (i == index) {
+        	replace.push(currentLetter);
+        } else {
+        	replace.push(arr[i]);
+        }
+    }
+    return replace;
+}
+
+function updateLetters() {
+	if (wordOne.includes(currentLetter)) {
+    	position = wordOne.indexOf(currentLetter);
+        
+    	wordOneArr = updateArray(wordOneArr, position);
+    } 
+    if (wordTwo.includes(currentLetter)) {
+    	position = wordTwo.indexOf(currentLetter);
+        
+    	wordTwoArr = updateArray(wordTwoArr, position);
+    }
+
+	showLetters();
+}
+
+
 
 </script>
 
