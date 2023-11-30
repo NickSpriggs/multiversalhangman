@@ -172,7 +172,9 @@
     
     height:140px;
     width: 140px;
-    
+	
+    touch-action: manipulation;
+
 }
 
 .keySectionR {
@@ -561,6 +563,7 @@ function createGhost() {
     	if (kill == true) {
         	clearInterval(ghost);  
 		kill = false;
+	// Need code here to give enemy new position (can't be zero cause unitarget is)
         }        
     }, 500);    
 }
