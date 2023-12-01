@@ -10,6 +10,7 @@
     background-color: lightgrey;
     float: left;
     border: solid black 25px;
+    color: transparent;
 }
 
 .pixel {
@@ -301,6 +302,21 @@
     text-align: center;
 }
 
+#WinLose {
+    position: absolute;
+    top: 200px;
+    left: 58px;
+    border: solid black 1px;
+    background: green;
+    color: white;
+    font-size: 45px;
+    height: 50px;
+    width: 350px;
+    text-align: center;
+    
+    display: none;
+}
+
 </style>
 
 <div class="gameboy">
@@ -318,6 +334,8 @@
     	<div id="one" class="letterBox"></div>
         <div id="two" class="letterBox"></div>
     </div>
+    
+    <div id="WinLose">You Win!</div>
     
     <div class="half">
     <div class="keySectionL">
@@ -402,6 +420,9 @@ start = document.getElementById("start");
 howToPlay = document.getElementById("howToPlay");
 cursor = "";
 
+// empty 
+empty = document.getElementById("game").innerHTML;
+
 function startGame() {
 	makePixels();
     move(10);
@@ -410,7 +431,6 @@ function startGame() {
     document.getElementById("game").style.backgroundSize = 'contain';
     
     showLetters();
-    toggle();
 }
 
 function homeScreen() {
@@ -578,11 +598,26 @@ setInterval(function() {
 	if (uniTarget == enemy) {
     	kill = true;
     }
+    if (player == enemy) {
+    	document.getElementById("WinLose").innerText = "You Lose!";
+    	document.getElementById("WinLose").style.backgroundColor = "red";
+        document.getElementById("WinLose").style.display = "inline-block";
+        cursor = "Home";
+        restartHomeScreen();
+    }
+    if (code.length == 0) {
+    	document.getElementById("WinLose").innerText = "You Win!";
+    	document.getElementById("WinLose").style.backgroundColor = "green";
+        document.getElementById("WinLose").style.display = "inline-block";
+        cursor = "Home";        
+        restartHomeScreen();    
+    }
 }, 5);
 
 function clearKill() {
 	kill = false;
 }
+
 
 function chooseType() {
 	arr = ["red-ghost", "blue-ghost", "green-ghost"];
@@ -591,45 +626,45 @@ function chooseType() {
 	return arr[randNum];
 }
 
-function createGhost() {
+function preGhost(type) {
+	if (kill == false) {            
+       OGenemy = enemy;
+
+       if (player > enemy) {
+           if (player.toString()[0] != enemy.toString()[0]) {
+               enemy += 10;
+           } else {
+               enemy += 1;        
+           }
+       } else if (player < enemy) {
+           if (enemy.toString()[0] != player.toString()[0]) {
+               enemy -= 10;
+           } else {
+               enemy -= 1;        
+           }
+       } 
+       document.getElementById("P" + OGenemy).innerHTML = OGenemy; 
+
+       document.getElementById("P" + enemy).innerHTML = '<div class="' + 
+       type + '">' + enemy +'</div>'; 
+      }
+}
+
+function createGhost() { 
 	let type = chooseType();    
     enemy = enemyPosition();
     
-    document.getElementById("myText").innerText += "I"; 
-
-    
-    var ghost = setInterval(function() {
-    
-		if (kill == false) {            
-          OGenemy = enemy;
-
-          if (player > enemy) {
-              if (player.toString()[0] != enemy.toString()[0]) {
-                  enemy += 10;
-              } else {
-                  enemy += 1;        
-              }
-          } else if (player < enemy) {
-              if (enemy.toString()[0] != player.toString()[0]) {
-                  enemy -= 10;
-              } else {
-                  enemy -= 1;        
-              }
-          } 
-
-
-          document.getElementById("P" + OGenemy).innerHTML = OGenemy; 
-
-          document.getElementById("P" + enemy).innerHTML = '<div class="' + 
-          type + '">' + enemy +'</div>'; 
-        }
-    
+    ghost = setInterval(function() {
+    	preGhost(type);
     	// Stops interval if kill becomes active:
     	if (kill == true) {
         	clearInterval(ghost);  
 			kill = false;     
             createLetter();
-        }        
+        }    
+        if (cursor != "playing") {
+        	clearInterval(ghost);
+        }
     }, 700); 
     // used to be 500
 }
@@ -755,13 +790,15 @@ function showInfo() {
 }
 
 function createLetter() {
-	randNum = Math.floor(Math.random() * (code.length - 1));
-	currentLetter = code[randNum];
-    
-    setTimeout(function() {
-      document.getElementById("P" + codeSpace).innerHTML = '<div class="' + 
-      "dot letter" + '">' + currentLetter +'</div>'; 
-    }, 200);
+	if (code.length != 0) {
+        randNum = Math.floor(Math.random() * (code.length - 1));
+        currentLetter = code[randNum];
+
+        setTimeout(function() {
+          document.getElementById("P" + codeSpace).innerHTML = '<div class="' + 
+          "dot letter" + '">' + currentLetter +'</div>'; 
+        }, 200);
+    }
 }
 
 function enemyPosition() {
@@ -846,6 +883,30 @@ function updateLetters() {
 	showLetters();
 }
 
+function restartHomeScreen() {
+	setTimeout(function() {
+    	document.getElementById("WinLose").style.display = "none";
+        document.getElementById("game").innerHTML = empty;
+       	document.getElementById("letterSection").style.display = "none";
+
+        homeScreen();
+        
+		direction = "";
+		hatColor = "orginal";
+		round = 1;
+		wordOne = "HAPPY";
+		wordOneArr = ["_", "_", "_", "_", "_"];
+		wordTwo = "BIRTHDAY";
+		wordTwoArr = ["_", "_", "_", "_", "_", "_", "_", "_"];
+		code = ["H", "A", "P", "Y", "B", "I", "R", "T", "D"];
+		colorCounter = -1;
+		currentLetter = "";
+		player = 25;
+		enemy = 100;
+		codeSpace = 100;
+    
+    }, 1000)
+}
 
 
 </script>
