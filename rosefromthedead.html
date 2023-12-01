@@ -442,6 +442,7 @@ let wordOneArr = ["_", "_", "_", "_", "_"];
 let wordTwo = "BIRTHDAY";
 let wordTwoArr = ["_", "_", "_", "_", "_", "_", "_", "_"];
 let code = ["H", "A", "P", "Y", "B", "I", "R", "T", "D"];
+let type = "none";
 
 let color = ["red", "blue", "green"];
 let colorCounter = -1;
@@ -577,8 +578,14 @@ function move(input) {
       "background " + hatColor + "-" + direction + '">' + player +'</div>';        
     }
     if (player == codeSpace) {
+    	// for whatever reason the kill didn't get set back to false
+      	// think it was because of the universal checker thing *
+    	kill = false;
+        //
     	updateLetters();
-    	createGhost();
+        if (code.length != 0) {
+    		createGhost();
+        }
         codeSpace = 100;
     }
 }
@@ -625,6 +632,18 @@ function changeHat() {
     "background " + hatColor + "-" + direction + '">' + player +'</div>'; 
 }
 
+function isElementMatch() {
+	if (hatColor == "red" && type == "green-ghost") {
+    	return true;
+    }
+    if (hatColor == "blue" && type == "red-ghost") {
+    	return true;
+    }
+    if (hatColor == "green" && type == "blue-ghost") {
+    	return true;
+    }
+}
+
 // ------------Combat-------------
 
 let uniTarget = 0;
@@ -632,8 +651,9 @@ let kill = false;
 
 // Checks to see if enemy has been killed 
 // Checks if player has letter
+// *
 setInterval(function() {
-	if (uniTarget == enemy) {
+	if (uniTarget == enemy && isElementMatch()) {
     	kill = true;
     }
     if (player == enemy) {
@@ -689,7 +709,7 @@ function preGhost(type) {
 }
 
 function createGhost() { 
-	let type = chooseType();    
+	type = chooseType();    
     enemy = enemyPosition();
     
     ghost = setInterval(function() {
@@ -835,24 +855,24 @@ function createLetter() {
         setTimeout(function() {
           document.getElementById("P" + codeSpace).innerHTML = '<div class="' + 
           "dot letter" + '">' + currentLetter +'</div>'; 
-        }, 200);
+        }, 100);
     }
 }
 
 function enemyPosition() {
 	x = player;
 
-	//area = [x - 18, x - 19, x - 20, x - 21, x - 22,
-    //x - 1, x - 2, x, x + 1, x + 2, 
-    //x - 8, x - 9, x - 10, x - 11, x - 12,
-    //x + 8, x + 9, x + 10, x + 11, x + 12,
-    //x + 18, x + 19, x + 20, x + 21, x + 22];
+	area = [x - 18, x - 19, x - 20, x - 21, x - 22,
+    x - 1, x - 2, x, x + 1, x + 2, 
+    x - 8, x - 9, x - 10, x - 11, x - 12,
+    x + 8, x + 9, x + 10, x + 11, x + 12,
+    x + 18, x + 19, x + 20, x + 21, x + 22];
     
-    area = [
-    x - 1, x, x + 1,
-    x - 9, x - 10, x - 11,
-    x + 9, x + 10, x + 11
-    ];
+    //area = [
+    //x - 1, x, x + 1,
+    //x - 9, x - 10, x - 11,
+    //x + 9, x + 10, x + 11
+    //];
     
     while (area.includes(x) || boundary.includes(x)) {
     	x = Math.floor(Math.random() * 99);
