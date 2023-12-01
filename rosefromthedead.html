@@ -330,14 +330,19 @@
     border: solid black 1px;
     background: purple;
     color: white;
-    font-size: 45px;
+    font-size: 35px;
     height: 300px;
     width: 300px;
     text-align: center;
     font-family: 'Public Pixel', sans-serif;
+    line-height: 1.6;
     
     display: none;
-    
+}
+
+#ruleScreenTwo {
+    width: 300px;
+	display: none;
 }
 
 </style>
@@ -348,17 +353,55 @@
 	<div id="game"></div>
     
     <div id="ruleScreen">
-        <div style="font-size: 15px; text-align: left; padding: 10px 15px 0px 15px;">
-        The great wizard Rose has sadly met their end. 
-        <br>
-        But worry not there is still hope.
-        <br>
-        Through the dark arts one may yet find life after death.
-        <br>
-        Simply defeat the spirits of the underworld to reclaim your
-        place in the mortal world.
+    
+    	<div id="ruleScreenOne">
+          <div style="font-size: 12px; text-align: left; padding: 10px 15px 0px 15px;">
+          The great wizard Rose has sadly met their end. 
+          <br>
+          But worry not.
+          <br>
+          Through the dark arts one may yet find life after death.
+          <br>
+          Defeat the spirits of the underworld and you may return to
+          the world of the living.
+          </div>
+          <div style="font-size: 20px; color: gold; padding-top: 15px">Continue</div>
         </div>
-        <div style="font-size: 20px; color: gold; padding-top: 10px">Continue</div>
+        
+        <div id="ruleScreenTwo">
+          <div>Rules</div>
+          
+          <div style="font-size: 9px;">Each spirit embodies one 
+          of three elements: fire, water, or grass</div>
+          
+          <div style="font-size: 10px; height: 5px; 
+          padding-left: 105px;">
+          	<div class="red-ghost" style="float: left;"></div>
+            <div class="blue-ghost" style="float: left;"></div>
+            <div class="green-ghost" style="float: left;"></div>
+            
+            <div class="green-ghost" style="float: left; opacity: 0;"></div>
+            <div class="green-ghost" style="float: left; opacity: 0;"></div>
+          </div>
+          
+          <div style="font-size: 9px;">Fire spirits require water spells, water spirits
+          require grass spells, and grass spirits require fire spells</div>
+          
+          <div style="font-size: 10px; height: 5px; 
+          padding-left: 105px;">
+          	<div class="attack-blue" style="float: left;"></div>
+            <div class="attack-green" style="float: left;"></div>
+            <div class="attack-red" style="float: left;"></div>
+            
+            <div class="green-ghost" style="float: left; opacity: 0;"></div>
+            <div class="green-ghost" style="float: left; opacity: 0;"></div>
+          </div>
+          
+          <div style="font-size: 9px;">Use B to attack and A to change spells</div>
+          
+          <div style="font-size: 20px; color: gold; padding-top: 5px">Continue</div>
+        </div>
+        
     </div>
     
     <div id="selectionScreen">
@@ -520,12 +563,16 @@ function aButton() {
     } else if (cursor == "howToPlay") {
     	selectionScreen.style.display = "none";
         document.getElementById("ruleScreen").style.display = "inline-block";
-        cursor = "howToPlayEnd";
-    } else if (cursor == "howToPlayTwo") {    
-    // none yet
+        cursor = "howToPlayTwo";
+    } else if (cursor == "howToPlayTwo") { 
+        document.getElementById("ruleScreenOne").style.display = "none";
+        document.getElementById("ruleScreenTwo").style.display = "inline-block";
+		cursor = "howToPlayEnd";
     } else if (cursor == "howToPlayEnd") {
         selectionScreen.style.display = "inline-block";
         document.getElementById("ruleScreen").style.display = "none";
+        document.getElementById("ruleScreenOne").style.display = "inline-block";
+        document.getElementById("ruleScreenTwo").style.display = "none";
     	cursor = "howToPlay";    
     }
 }
