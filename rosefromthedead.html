@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
 <body>
 <style>
 
@@ -243,25 +244,30 @@
 
 #selectionScreen {
 	height: 65px;
-    width: 120px;
+    width: 230px;
     
     position: absolute;
     top: 245px;
     left: 105px;
+    font-family: 'Public Pixel', sans-serif;
+    font-size: 14px;
+
     
     display: none;
     text-align: left;
     color: white;
-    font-size: 20px;
 }
 
 #pressA {
     position: absolute;
     top: 235px;
-    left: 182px;
+    left: 155px;
     color: white;
+    font-family: 'Public Pixel', sans-serif;
+    font-size: 10px;
     
     display: none;
+
 }
 
 .letter {
@@ -317,6 +323,23 @@
     display: none;
 }
 
+#ruleScreen {
+    position: absolute;
+    top: 85px;
+    left: 81px;
+    border: solid black 1px;
+    background: purple;
+    color: white;
+    font-size: 45px;
+    height: 300px;
+    width: 300px;
+    text-align: center;
+    font-family: 'Public Pixel', sans-serif;
+    
+    display: none;
+    
+}
+
 </style>
 
 <div class="gameboy">
@@ -324,9 +347,23 @@
     
 	<div id="game"></div>
     
+    <div id="ruleScreen">
+        <div style="font-size: 15px; text-align: left; padding: 10px 15px 0px 15px;">
+        The great wizard Rose has sadly met their end. 
+        <br>
+        But worry not there is still hope.
+        <br>
+        Through the dark arts one may yet find life after death.
+        <br>
+        Simply defeat the spirits of the underworld to reclaim your
+        place in the mortal world.
+        </div>
+        <div style="font-size: 20px; color: gold; padding-top: 10px">Continue</div>
+    </div>
+    
     <div id="selectionScreen">
     	<div id="start">Start Game</div>
-        <div id="howToPlay">How To Play</div>
+        <div id="howToPlay" style="padding-top: 5px;">How To Play</div>
     </div>
     
     <div id="pressA">Press A to Begin</div>
@@ -443,12 +480,6 @@ function homeScreen() {
     cursor = "start";
 }
 
-function howTo() {
-	document.getElementById("game").style.backgroundImage = 
-    "url('http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/rule-screen_orig.png')"; 
-    document.getElementById("game").style.backgroundSize = 'cover';
-}
-
 function up() {
 	if (cursor == "howToPlay") {
     	start.style.color = "gold";
@@ -487,7 +518,14 @@ function aButton() {
     	changeHat();    
     } else if (cursor == "howToPlay") {
     	selectionScreen.style.display = "none";
-        howTo();
+        document.getElementById("ruleScreen").style.display = "inline-block";
+        cursor = "howToPlayEnd";
+    } else if (cursor == "howToPlayTwo") {    
+    // none yet
+    } else if (cursor == "howToPlayEnd") {
+        selectionScreen.style.display = "inline-block";
+        document.getElementById("ruleScreen").style.display = "none";
+    	cursor = "howToPlay";    
     }
 }
 
