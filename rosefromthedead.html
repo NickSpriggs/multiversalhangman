@@ -286,8 +286,8 @@
 
 #letterSection {
     position: absolute;
-    top: 70px;
-    left: 125px;
+    top: 387px;
+    left: 135px;
     color: white;
     
     display: none;
@@ -295,7 +295,7 @@
 
 .letterBox {
 	float: left;
-    padding-left: 25px;
+    /*padding-left: 25px;*/
     
 }
 
@@ -306,6 +306,11 @@
     color: green;
     width: 12px;
     text-align: center;
+}
+
+.scored {
+    background: green;
+    color: white;	
 }
 
 #WinLose {
@@ -412,6 +417,7 @@
     <div id="pressA">Press A to Begin</div>
     <div id="letterSection">
     	<div id="one" class="letterBox"></div>
+        <div class="scoreBox">_</div>
         <div id="two" class="letterBox"></div>
     </div>
     
@@ -702,6 +708,9 @@ let kill = false;
 setInterval(function() {
 	if (uniTarget == enemy && isElementMatch()) {
     	kill = true;
+        // wall fix? 
+        codeSpace = enemy;
+        enemy = 100;
     }
     if (player == enemy) {
     	document.getElementById("WinLose").innerText = "You Lose!";
@@ -850,8 +859,7 @@ function attack() {
             document.getElementById("P" + previous).innerHTML = ''; 
             uniTarget = 0;   
             
-            codeSpace = enemy;
-            enemy = 100;
+			//wall problem fixed?
         }
         
     	// Stops interval if reaching end or letter:
@@ -896,6 +904,7 @@ function showInfo() {
 
 function createLetter() {
 	if (code.length != 0) {
+        
         randNum = Math.floor(Math.random() * (code.length - 1));
         currentLetter = code[randNum];
 
@@ -935,9 +944,17 @@ function showLetters() {
 
 function toDisplay(arr) {
 	let string = "";
+    let m = "";
     
     for (i=0; i<arr.length; i++) {
-    	string += '<div class="scoreBox">' + arr[i] + '</div>';
+    
+    	if (arr[i] != "_") {
+        	m = " scored"; 
+        } else {
+        	m = "";
+        }
+    
+    	string += '<div class="scoreBox' + m + '">' + arr[i] + '</div>';
     }
 
 	return string;
