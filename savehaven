@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<body>
+<style>
+
+#game {
+	height: 300px;
+    width: 300px;
+    background-color: transparent;
+    float: left;
+    position: absolute;
+    left: 175px;
+    margin-top: 25px;
+    z-index: 2;
+}
+
+#underBackground {
+    background-color: lightgrey;
+    
+    background-size: cover;
+    height: 300px;
+    width: 300px;
+    position: absolute;
+    left: 175px;
+    margin-top: 25px;
+    z-index: 1;
+}
+
+.pixel {
+	height: 30px;
+    width: 30px;
+    float: left;
+}
+
+.left {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/left_orig.png"); 
+    background-size: cover;
+    height: 30px;
+    width: 30px;
+}
+
+.right {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/right_orig.png"); 
+    background-size: cover;
+    height: 30px;
+    width: 30px;
+}
+
+.up {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/up_orig.png"); 
+    background-size: cover;
+    height: 30px;
+    width: 30px;
+}
+
+.down {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/down_orig.png"); 
+    background-size: cover;
+    height: 30px;
+    width: 30px;
+}
+
+.blue {
+	background-color: blue;
+    height: 30px;
+    width: 30px;
+}
+
+.black {
+	background-color: black;
+}
+
+.gameboy {
+    height: 350px;
+    width: 650px;
+    background-color: #32127A;
+    margin-top: 100px;
+}
+
+#centerSect {
+	height: 300px;
+    width: 300px;
+    
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/img-copy_orig.png"); 
+    background-size: cover;
+    
+    float: left;
+    margin-top: 25px;
+    margin-left: -8px;
+}
+
+.half {
+    height: 350px;
+    width: 175px;
+    float: left;
+    background-color: #32127A;
+ 
+    touch-action: manipulation;	
+}
+
+.keySectionL {
+	margin-top: 110px;
+	margin-left: 35px; 
+    
+    height:100px;
+    width: 100px;
+}
+
+.keySectionR {
+	margin-top: 110px;
+	margin-left: 35px; 
+    
+    height:100px;
+    width: 120px;
+}
+
+.bottomSectionL {
+    height:50px;
+    width: 175px;
+    padding-top: 60px;
+    padding-left: 115px;
+    color: lightgrey;
+}
+
+.key {
+    height:33px;
+    width: 33px;
+    float: left;
+    background-color: lightgrey;
+    text-align: center;
+  	font-size: 30px;
+    color: grey;
+
+    touch-action: manipulation;
+
+}
+
+.kp {
+	cursor: pointer;
+}
+
+.dot {
+  height: 45px;
+  width: 45px;
+  background-color: lightgrey;
+  color: grey;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  font-size: 37px;
+  float: left;
+  cursor: pointer;
+  
+  touch-action: manipulation;
+
+}
+
+.small {
+  height: 15px;
+  width: 15px;
+  margin-left: 1px;
+}
+
+#hiding {
+	display: none;
+}
+
+.pill {
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/stock-vector-medicine-pill-bottle-container-child-resistant-pharamcy-storage-amber-orange-bit-pixel-art-2029148558_orig.png"); 
+    background-size: cover;
+    height: 30px;
+    width: 30px;
+}
+
+</style>
+
+<div class="gameboy">
+	<div class="half">
+    	<div class="keySectionL">
+			<div class="key" style="background-color: #32127A"></div>
+			<div class="key kp" onclick="move(-10)"></div>
+            <div class="key" style="background-color: #32127A"></div>
+			<div class="key kp" onclick="move(-1)"></div>
+            <div class="key">O</div>
+			<div class="key kp" onclick="move(1)"></div>
+            <div class="key" style="background-color: #32127A"></div>
+			<div class="key kp" onclick="move(10)"></div>
+            <div class="key" style="background-color: #32127A"></div>
+        </div>
+        <div class="bottomSectionL">
+        	<div style="float:left;">Start</div>
+            <div class="dot small" onclick="startGame2()"></div>
+            <br>
+        	<div style="float:left;">Edit.</div>
+            <div class="dot small" onclick="toggleHiding()"></div>
+        </div>
+    </div>
+    
+	<div id="game"></div>
+    <div id="underBackground"></div>
+    
+   	<div id="centerSect"></div>
+            
+    <div class="half">
+    	<div class="keySectionR">
+            <div class="dot" style="margin-top: 20px"
+            onclick="">B</div>
+            <div class="dot" style="margin-left: 20px"
+            onclick="">A</div>
+        </div>    
+    </div>
+</div>
+
+
+<div id="hiding">
+
+<button onclick="startGame()">Start</button>
+
+
+<p id="myText"></p>
+
+<button onclick="toggle()">Toggle Numbering</button>
+<button onclick="makeEnemy()">Create Enemy</button>
+
+<button onclick="lightenImage()">Lighten</button>
+
+<br>
+<br>
+
+</div>
+
+<script>
+
+let boundary = makeBoundary();
+let objects = [];
+
+let direction = "down";
+let player = 25;
+
+let enemy = 51;
+
+function startGame() {
+	makePixels();
+    move(10);
+    // Beta //
+    toggle();
+}
+
+function makePixels() {
+	let gameSpace = document.getElementById("game");  
+    gameSpace.innerHTML = "";
+    
+    for (i=0; i<100; i++) {
+    	let pixel = "pixel";
+        
+    	if (boundary.includes(i) || objects.includes(i)) {
+        	//pixel += " black";
+            
+        }
+
+  		gameSpace.innerHTML += '<div id="P' + i + '" class="' + pixel + 
+        '">' + i +'</div>';
+    }
+}
+
+
+function move(input) { 
+    let direction = "";
+    
+    if (check(input)) { 
+      document.getElementById("P" + player).innerHTML = player;
+
+      player += input;
+            
+      if (input == -1) {
+      	  direction = "left";  
+      } else if (input == 1) {
+          direction = "right";  
+      } else if (input == -10) {
+      	  direction = "up";        
+      } else if (input == 10) {
+      	  direction = "down";        
+      }
+      
+      /// Temporary Code (For Show) /// 
+      if (player == pill) {
+      	createPill();
+        lightenImage();
+      }
+	  /// Above is Temporary Code (For Show) ///
+      
+      document.getElementById("P" + player).innerHTML = '<div class="' + 
+      direction + '">' + player +'</div>';        
+    }
+}
+
+function check(input) {
+	if (!boundary.includes(player + input) && 
+    !objects.includes(player + input)) {
+ 		return true;   
+    } else {
+    	return false;
+    }
+}
+
+function makeEnemy() {
+	OGenemy = enemy;
+    
+	if (player > enemy) {
+    	if (player.toString()[0] != enemy.toString()[0]) {
+        	enemy += 10;
+        } else {
+            enemy += 1;        
+        }
+    } else if (player < enemy) {
+    	if (enemy.toString()[0] != player.toString()[0]) {
+        	enemy -= 10;
+        } else {
+            enemy -= 1;        
+        }
+    } 
+    
+    document.getElementById("P" + OGenemy).innerHTML = OGenemy; 
+    
+	document.getElementById("P" + enemy).innerHTML = '<div class="' + 
+    'blue' + '">' + enemy +'</div>';    
+}
+
+//setInterval(makeEnemy, 500);
+
+
+function makeBoundary() {
+	let arr =  [];
+	 //a = specialForLoop(0, 9, 1);
+     //b = specialForLoop(0, 90, 10);
+     //c = specialForLoop(9, 99, 10);
+     //d = specialForLoop(90, 99, 1);
+
+     //arr = a.concat(b).concat(c).concat(d);
+
+     a = specialForLoop(0, 19, 1);
+     b = specialForLoop(11, 81, 10);
+     c = specialForLoop(18, 99, 10);
+     d = specialForLoop(70, 99, 1);
+     e = specialForLoop(0, 90, 10);
+     f = specialForLoop(1, 91, 10);
+     g = specialForLoop(9, 99, 10);
+     
+     arr = a.concat(b).concat(c).concat(d).concat(e).concat(f).concat(g);
+     return arr;
+
+}
+
+function specialForLoop(vOne, vTwo, vThree) {
+	let arr = [];
+	for (i=vOne; i<=vTwo; i+=vThree) {
+    	arr.push(i);
+    }
+    return arr;
+}
+
+function toggle() {
+	let gameSpace = document.getElementById("game");  
+	if (gameSpace.style.color == "transparent") {
+		gameSpace.style.color = "black";
+    } else {
+		gameSpace.style.color = "transparent";
+    }
+}
+
+function toggleHiding() {
+	let hiding = document.getElementById("hiding");  
+	if (hiding.style.display == "none") {
+		hiding.style.display = "inline-block";
+    } else {
+		hiding.style.display = "none";
+    }
+}
+
+/// Temporary Code (For Show) ///
+let pill = 1;
+function createPill() {     
+     while (boundary.includes(pill) || pill == player) {
+		pill = Math.floor(Math.random() * 79);
+     }
+
+	 document.getElementById("P" + pill).innerHTML = '<div class="' + 
+    'pill' + '">' + '</div>'; 
+}
+
+function startGame2() {
+	makePixels();
+    move(10);
+    toggle();
+    
+    createPill();
+    document.getElementById("game").style.backgroundImage = "url('http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/teacher-desk-school-24640-45629-copy-2_orig.png')"; 
+    document.getElementById("game").style.backgroundSize = 'cover';
+    
+	document.getElementById("underBackground").style.backgroundColor = 'white';
+
+}
+
+// lighten background //
+
+opacity = [".9", ".8", ".7", ".6", ".5", ".4", ".3", ".2", ".1", ".0"];
+opacityCount = 0;
+
+function lightenImage() {
+  document.getElementById("underBackground").style.opacity = opacity[opacityCount];
+  if (opacityCount != 10) {
+  	opacityCount++;
+  }
+}
+
+//Added pill class, altered move(), and create function in temp code area 
+
+</script>
+
+</body>
+</html>
