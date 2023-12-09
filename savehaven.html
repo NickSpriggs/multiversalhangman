@@ -15,14 +15,14 @@
 }
 
 #underBackground {
-    background-color: lightgrey;
+    background-color: white;
     
     background-size: cover;
-    height: 300px;
-    width: 300px;
+    height: 175.99px;
+    width: 205px;
     position: absolute;
-    left: 175px;
-    margin-top: 25px;
+    left: 225px;
+    margin-top: 69.95px;
     z-index: 1;
 }
 
@@ -81,7 +81,7 @@
 	height: 300px;
     width: 300px;
     
-    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/img-copy_orig.png"); 
+    background-color: white;
     background-size: cover;
     
     float: left;
@@ -379,6 +379,8 @@ function toggleHiding() {
 
 /// Temporary Code (For Show) ///
 let pill = 1;
+let changePic = false;
+
 function createPill() {     
      while (boundary.includes(pill) || pill == player) {
 		pill = Math.floor(Math.random() * 79);
@@ -386,30 +388,76 @@ function createPill() {
 
 	 document.getElementById("P" + pill).innerHTML = '<div class="' + 
     'pill' + '">' + '</div>'; 
+    
+    if (changePic == true) { 
+    	document.getElementById("underBackground").style.opacity = "1";
+        makePic();
+    	changePic = false;
+    }
 }
 
 function startGame2() {
+	document.getElementById("centerSect").style.backgroundImage =  'url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/img-copy_orig.png")';
+
 	makePixels();
     move(10);
     toggle();
     
     createPill();
-    document.getElementById("game").style.backgroundImage = "url('http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/teacher-desk-school-24640-45629-copy-2_orig.png')"; 
-    document.getElementById("game").style.backgroundSize = 'cover';
+    makePic();
     
-	document.getElementById("underBackground").style.backgroundColor = 'white';
+    //document.getElementById("game").style.backgroundSize = 'cover';
+    
+}
 
+function removeArr(index, arr) {
+	replaceArr = [];
+    
+    for (i=0; i<arr.length; i++) {
+    	if (i != index) {
+        	replaceArr.push(arr[i]);
+        }
+    }
+    return replaceArr;
+}
+
+function makePic() {
+    let num = Math.floor(Math.random() * (picArr.length));
+	pic = picArr[num];
+    
+    document.getElementById("centerSect").style.backgroundImage = "url('http://moviewatchlist.weebly.com/uploads" + pic + ".png')";
+    
+    picArr = removeArr(num, picArr);
+    opacityCount = 0;
 }
 
 // lighten background //
 
-opacity = [".9", ".8", ".7", ".6", ".5", ".4", ".3", ".2", ".1", ".0"];
+opacity = ["1", ".9", ".8", ".7", ".6", ".5", ".4", ".3", ".1", ".0"];
+
 opacityCount = 0;
+
+pic1 = "/8/6/4/2/86429426/img-copy_orig";
+pic2 = "/8/6/4/2/86429426/img-3639_orig";
+pic3 = "/8/6/4/2/86429426/img-3640_orig";
+pic4 = "/8/6/4/2/86429426/img-3641_orig";
+pic5 = "/8/6/4/2/86429426/img-3642_orig";
+pic6 = "/8/6/4/2/86429426/img-3643_orig";
+pic7 = "/8/6/4/2/86429426/img-3647_orig";
+pic8 = "/8/6/4/2/86429426/img-3646_orig";
+pic9 = "/8/6/4/2/86429426/img-3645_orig";
+pic10 = "/8/6/4/2/86429426/img-3644_orig";
+
+picArr = [pic1, pic2, pic3, pic4, pic5,
+pic6, pic7, pic8, pic9, pic10];
 
 function lightenImage() {
   document.getElementById("underBackground").style.opacity = opacity[opacityCount];
   if (opacityCount != 10) {
   	opacityCount++;
+  }
+  if (opacityCount == 10) {
+  	changePic = true;
   }
 }
 
