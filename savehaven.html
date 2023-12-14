@@ -172,28 +172,83 @@
     width: 30px;
 }
 
+#selectionScreen {
+    height: 300px;
+    width: 300px;	
+    
+    background-image: url("http://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/screen-shot-2023-12-14-at-5-04-59-pm_orig.png"); 
+    background-size: contain;
+    background-repeat: no repeat;
+    
+    position: absolute;
+    z-index: 2;
+    left: 175px;
+    margin-top: 25px;
+    
+    display: none;
+}
+
+#ruleScreen {
+    height: 300px;
+    width: 300px;	
+    
+    background-color: lightblue;
+    
+    position: absolute;
+    z-index: 2;
+    left: 175px;
+    margin-top: 25px;
+    
+    display: none;
+    
+    text-align: center;
+    font-size: 25px;
+}
+
 </style>
 
 <div class="gameboy">
 	<div class="half">
     	<div class="keySectionL">
 			<div class="key" style="background-color: #32127A"></div>
-			<div class="key kp" onclick="move(-10)"></div>
+			<div class="key kp" onclick="up()"></div>
             <div class="key" style="background-color: #32127A"></div>
 			<div class="key kp" onclick="move(-1)"></div>
             <div class="key">O</div>
 			<div class="key kp" onclick="move(1)"></div>
             <div class="key" style="background-color: #32127A"></div>
-			<div class="key kp" onclick="move(10)"></div>
+			<div class="key kp" onclick="down()"></div>
             <div class="key" style="background-color: #32127A"></div>
         </div>
         <div class="bottomSectionL">
         	<div style="float:left;">Start</div>
-            <div class="dot small" onclick="startGame2()"></div>
+            <div class="dot small" onclick="onButton()"></div>
             <br>
         	<div style="float:left;">Edit.</div>
             <div class="dot small" onclick="toggleHiding()"></div>
         </div>
+    </div>
+    
+    <div id="selectionScreen" style="color: white;">
+    	<div id="play" style="padding-top: 60px; padding-left: 35px;">
+        BEGIN GAME</div>
+        
+        <div id="rules" style="padding-left: 35px;">
+        HOW TO PLAY</div>
+    </div>
+    
+    <div id="ruleScreen">
+        <br>
+        Finals have begun but our favorite
+        artist is exhausted!
+        <br>
+        <br>
+        Collect enough adderrall so that they may
+        finish each assignment.
+        <div class="pill" style="height: 50px;
+    	width: 50px; margin-left: 122px;">
+        </div>
+        <div style="color: green">Continue</div>
     </div>
     
 	<div id="game"></div>
@@ -206,7 +261,7 @@
             <div class="dot" style="margin-top: 20px"
             onclick="">B</div>
             <div class="dot" style="margin-left: 20px"
-            onclick="">A</div>
+            onclick="aButton()">A</div>
         </div>    
     </div>
 </div>
@@ -459,6 +514,54 @@ function lightenImage() {
   if (opacityCount == 10) {
   	changePic = true;
   }
+}
+
+let cursor = "";
+let selectionScreen = document.getElementById("selectionScreen");
+
+function onButton() {
+	if (cursor == "") {
+		cursor = "start";
+    	selectionScreen.style.display = "inline-block";
+        document.getElementById("play").style.color = "green";
+    }  
+}
+
+function up() {
+	if (cursor == "playing") {
+    	move(-10);
+    }
+    if (cursor == "howToPlay") {
+    	cursor = "start";
+        document.getElementById("play").style.color = "green";
+        document.getElementById("rules").style.color = "white";
+    }   
+}
+
+function down() {
+	if (cursor == "playing") {
+    	move(10);
+    } 
+    if (cursor == "start") {
+    	cursor = "howToPlay";
+        document.getElementById("play").style.color = "white";
+        document.getElementById("rules").style.color = "green";
+    }
+}
+
+function aButton() {
+	if (cursor == "start") {
+    	selectionScreen.style.display = "none";
+        cursor = "playing";
+
+    	startGame2();
+    } else if (cursor == "howToPlay") {
+    	cursor = "returnHome";
+        document.getElementById("ruleScreen").style.display = "inline-block";
+    } else if (cursor == "returnHome") {
+    	cursor = "howToPlay"
+    	document.getElementById("ruleScreen").style.display = "none";
+    }
 }
 
 //Added pill class, altered move(), and create function in temp code area 
