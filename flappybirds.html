@@ -1,0 +1,286 @@
+ <!DOCTYPE html>
+<html>
+<head>
+
+<!-- Font Awesome Icon Library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<title>Page Title</title>
+<style>
+
+.TitleBox {
+     background-color: black;
+     text-align: center;
+     height: 40px;
+     width: 300px;
+     font-size: 30px;
+     color: white;
+     }
+     
+#gameSpace {
+     background-color: lightblue;
+     height: 300px;
+     width: 300px;
+     }
+
+.pixel {
+     background-color: transparent;
+     height: 30px;
+     width: 30px;
+     float: left;
+     }
+
+.pixel-red {
+     background-color: red;
+     height: 30px;
+     width: 30px;
+     float: left;
+     }
+     
+.blocks {
+     background-color: green;
+     height: 30px;
+     width: 30px;
+     float: left;
+     }
+     
+.player {
+    height: 30px;
+    width: 30px;
+    float: left;
+    background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/canvas_orig.png");  
+    background-size: 210%; 
+    background-repeat: no-repeat;  
+    background-position: center;
+}
+     
+#playBox {
+	 padding-top: 5px;
+     text-align: center;
+     height: 40px;
+     width: 150px;
+     font-size: 30px;
+     background-color: rgba(190, 30, 8);
+     color: white;
+     float:left;
+     cursor: pointer;
+	} 
+    
+#settingsBox {
+	 padding-top: 5px;
+     text-align: center;
+     height: 40px;
+     width: 150px;
+     font-size: 30px;
+     background-color: rgba(50, 10, 158);
+     color: white;
+     float:left;
+     cursor: pointer;
+	}  
+
+#settings {
+	display: none;
+}
+
+</style>
+</head>
+<body>
+
+<div class="TitleBox">Spriggy Bird</div>
+
+<div id="gameSpace" onclick="movePlayer()"></div>
+
+<div id="scoreBox" class="TitleBox">Score: 0</div>
+
+<div class="TitleBox">
+<div id="playBox" onclick="startGame()">Play</div>
+<div id="settingsBox" onclick="settings()">Settings</div>
+</div>
+
+
+<div id="settings">
+
+<button onclick="createPixels()">Create Pixels</button>
+<button onclick="createPlayer(42)">Create Player</button>
+<button onclick="createBlocks()">Create Blocks</button>
+<button onclick="showInfo()">Show Info</button>
+
+
+<div>----------------------------------------------</div>
+<div id="textSpace">[Text]</div>
+<div id="textSpace2">[Text]</div>
+
+<button onclick="startGame()">Start Game</button>
+<button onclick="quitGame()">Quit Game</button>
+
+</div>
+
+
+<script>
+
+var score = 0;
+var pixelArray = [];
+
+var playerPosition = 32;
+var blockBackup = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+var blockPositions = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+
+
+function createPixels() {
+    var gameSpace = document.getElementById("gameSpace");
+    gameSpace.innerHTML = "";
+    var scoreBox = document.getElementById("scoreBox");
+	scoreBox.innerText = "Score: 0";
+    
+	var i;	
+  
+    for (i=0; i < 100; i++) {
+
+        var pixelDiv = '<div id=' + 'P' + (i) + ' class="pixel"></div>'; 
+        
+        var pixelObject = {
+            id: "P" + i, 
+            type: "pixel",
+        };
+        
+        gameSpace.innerHTML += pixelDiv;
+        pixelArray.push(pixelObject); 
+    } 
+}
+
+function alterPixel(pixelNumber, newType) {
+	if (pixelNumber > 99) {
+    	pixelNumber = 99;
+    }
+   	if (pixelNumber < 1) {
+    	pixelNumber = 0;
+    }   
+	pixelID = "P" + pixelNumber;
+    
+   	document.getElementById(pixelID).outerHTML = '<div id=' + pixelID + ' class="' + newType + '"></div>'; 
+    
+    pixelArray[pixelNumber].type = newType;
+    
+}
+
+var blockCounter = 0;
+var openingPosition = 0;
+
+function createBlocks() { 
+    
+    for (i=0; i<blockPositions.length; i++) {
+    	if (i != openingPosition && i != openingPosition + 1) {
+    		alterPixel(blockPositions[i], "pixel");	
+        }	
+    }
+    
+    if (blockCounter == 10) {
+    	blockPositions = blockBackup;
+    	blockCounter = 0;
+        openingPosition = getOpening();
+    }
+    blockCounter++; 
+    
+   	blockPositions = subtractOne(blockPositions);
+	for (i=0; i<blockPositions.length; i++) {
+    	if (i != openingPosition && i != openingPosition + 1) {
+    		alterPixel(blockPositions[i], "blocks");	
+        }
+    }
+    
+    if (blockCounter == 8) {
+    	o1 = blockPositions[openingPosition];
+        o2 = blockPositions[openingPosition+1];
+    
+    	checkScore(playerPosition, o1, o2);
+    }
+       
+}
+
+function getOpening() {
+	randomNum = Math.floor(Math.random() * 9);
+    return randomNum;
+}
+
+function checkScore(playerVariable, openingStart, openingEnd) {
+    var scoreBox = document.getElementById("scoreBox");
+    
+	if (playerVariable == openingStart || playerVariable == openingEnd) {
+    	score++;
+        
+        scoreBox.innerText = "Score: " + score;
+    } else {
+    	quitGame();
+        scoreBox.innerText = "GAME OVER";
+    }
+}
+
+
+function subtractOne(array) {
+	newArr = [];
+    
+    for (i=0; i<array.length; i++) {
+    	number = array[i] - 1;
+        newArr.push(number);
+    }
+    return newArr;
+}
+
+
+function createPlayer() {
+	alterPixel(playerPosition, "pixel");
+    if (playerPosition < 90) {
+    	playerPosition += 10;
+    }   
+    alterPixel(playerPosition, "player");
+}
+
+function movePlayer() {
+	alterPixel(playerPosition, "pixel");  
+    if (playerPosition > 10) {
+    	playerPosition -= 10;
+    }
+    alterPixel(playerPosition, "player");
+}
+
+function showInfo() {
+    var textSpace = document.getElementById("textSpace");
+    var textSpace2 = document.getElementById("textSpace2");
+
+    textSpace.innerText = "Player Position: " + playerPosition + "\n BlockCounter: " + blockCounter;
+	textSpace2.innerText = "blockPositions[openingPosition]: " + blockPositions[openingPosition] + "  blockPositions[openingPosition+1]: " + blockPositions[openingPosition+1];  
+}
+
+function settings() {
+    var setting = document.getElementById("settings");
+    setting.style.display = "block";
+}
+
+
+function startGame() {    
+	createPixels();
+    
+    playerInterval = setInterval(createPlayer, 500);    
+    
+    openingPosition = getOpening();
+    blockInterval = setInterval(createBlocks, 500);    
+
+    infoInterval = setInterval(showInfo, 100);
+
+}
+
+function quitGame() {
+	alterPixel(playerPosition, "pixel-red");
+    
+	clearInterval(playerInterval);
+   	clearInterval(blockInterval);
+	clearInterval(infoInterval);
+    
+    score = 0;
+}
+
+</script>
+
+</body>
+</html>
