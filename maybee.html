@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<style>
+
+#game {
+	background-color: black;
+    height: 500px;
+    width: 350px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    
+}
+
+#overlay {
+      position: fixed;
+      display: block;
+      height: 500px;
+      width: 350px;
+      border: 1px solid black;
+	  color: white;
+      background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/screen-shot-2025-01-03-at-12-17-00-pm_orig.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 2;
+}
+
+#playNow {
+	  margin-top: 400px;
+      height: 100px;
+      width: 350px;
+	  background-color: green; 
+      font-size: 85px;
+      text-align: center;
+      cursor: pointer;
+}
+
+#question {
+	background-color: grey;
+    border: 10px solid black;
+    height: 85px;
+    width: 330px;
+    display: inline-block;
+    float: left;
+    
+    text-align: center;
+    font-size: 35px;
+    color: white;
+}
+
+.button {
+    height: 380px;
+    width: 175px;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    color: white;
+    font-size: 45px;
+    cursor: pointer;
+}
+
+.red {
+	background-color: #C6011F;
+}
+
+.blue {
+	background-color: blue;
+}
+
+.button:hover {
+	background-color: gold;
+}
+
+#may {
+	background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/screen-shot-2024-05-25-at-11-48-50-am-copy-4_orig.png");
+    background-size: 90%;
+    height: 200px;
+    width: 200px;
+    margin-top: 70px;
+    margin-left: -10px;
+}
+
+#bee {
+	background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/screen-shot-2024-05-25-at-11-48-50-am-copy-2_orig.png");
+    background-size: 90%;
+    height: 200px;
+    width: 200px;
+    margin-top: 72px;
+    margin-left: -5px;
+}
+
+</style>
+<body>
+
+<div id="game">
+	<div id="overlay">
+    	<div id="playNow" onclick="startGame()">START</div>
+    </div> 
+    
+	<div id="question"></div>
+    
+    <div class="red button" onclick="answer('MAY')">
+    	<div id="may"></div>
+        MAY
+    </div>
+    
+    <div class="blue button" onclick="answer('BEE')">
+    	<div id="bee"></div>  
+        BEE
+    </div>
+</div>
+
+<!-- <button onclick="startGame()">Start Game</button> -->
+
+<div id="here"></div>
+
+</body>
+</html> 
+
+
+<script>
+
+var questions = [
+		["I used to do jazzercise", "BEE"],
+        ["I have two gay uncles", "MAY"],
+        ["I went to White County High School", "MAY"],
+        ["I went to Lumpkin County High School", "BEE"],
+        ["Dexter is my hallpass", "MAY"],
+        ["My favorite cologne is 'VACATION'", "BEE"],
+        ["I have two younger brothers", "MAY"],
+        ["I used to be really into anthropology", "BEE"],
+];
+
+var funOne = ["I am WRONG about Dinosaurs", "BEE"];
+var funTwo = ["No, I don't want to hear about Delta", "MAY"]; 
+
+var score = 0;
+
+var styleOG = document.getElementById("question").style;
+
+var buttonsActive = true;
+
+function startGame() {  
+	document.getElementById("overlay").style.display = "none";
+
+	shuffle(questions);
+    questions.push(funOne, funTwo);
+    
+	document.getElementById("question").innerText = questions[0][0];
+}
+
+function answer(name) {
+	if (buttonsActive == true) {
+      document.getElementById("question").style.fontSize = "70px";
+
+      if (name == questions[0][1]) {
+          document.getElementById("question").style.backgroundColor = "green";
+          document.getElementById("question").innerText = "Correct";
+          score += 10;
+      } else {
+          document.getElementById("question").style.backgroundColor = "red";
+          document.getElementById("question").innerText = "Incorrect";    
+      }
+
+      // Move on to next question (Create new array without question)
+      buttonsActive = false;
+      setTimeout(nextQuestion, 500);
+    }
+}
+
+function nextQuestion() {
+	buttonsActive = true;
+	document.getElementById("question").style = styleOG;
+    
+    questions.shift();
+    if (questions.length > 0) {
+	   document.getElementById("question").innerText = questions[0][0];
+    } else {
+    	document.getElementById("question").style.fontSize = "70px";
+        document.getElementById("question").style.backgroundColor = "black";
+    	document.getElementById("question").innerText = 
+        score + "%";
+    }
+}
+
+function shuffle(array) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}
+
+
+</script>
+
+
