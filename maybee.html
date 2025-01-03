@@ -34,6 +34,10 @@
       cursor: pointer;
 }
 
+#playNow:hover {
+	background-color: darkgreen;
+}
+
 #question {
 	background-color: grey;
     border: 10px solid black;
@@ -66,9 +70,6 @@
 	background-color: blue;
 }
 
-.button:hover {
-	background-color: gold;
-}
 
 #may {
 	background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/screen-shot-2024-05-25-at-11-48-50-am-copy-4_orig.png");
@@ -98,12 +99,12 @@
     
 	<div id="question"></div>
     
-    <div class="red button" onclick="answer('MAY')">
+    <div class="red button" id="b1" onclick="answer('MAY')">
     	<div id="may"></div>
         MAY
     </div>
     
-    <div class="blue button" onclick="answer('BEE')">
+    <div class="blue button" id="b2" onclick="answer('BEE')">
     	<div id="bee"></div>  
         BEE
     </div>
@@ -163,12 +164,21 @@ function answer(name) {
 
       // Move on to next question (Create new array without question)
       buttonsActive = false;
+      if (name == "MAY") {
+      	 document.getElementById("b1").style.backgroundColor = "gold"; 
+      } else {
+      	 document.getElementById("b2").style.backgroundColor = "gold";     
+      }
+      
       setTimeout(nextQuestion, 500);
     }
 }
 
 function nextQuestion() {
 	buttonsActive = true;
+    document.getElementById("b1").style.backgroundColor = "#C6011F"; 
+    document.getElementById("b2").style.backgroundColor = "blue";     
+    
 	document.getElementById("question").style = styleOG;
     
     questions.shift();
@@ -200,5 +210,3 @@ function shuffle(array) {
 
 
 </script>
-
-
