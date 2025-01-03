@@ -61,7 +61,8 @@
 }
 
 .blue {
-	background-color: blue;
+	background-image: url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/pixel-art-illustration-ufo-pixelated-ufo-farm-ufo-space-alien-pixelated-pixel-art-game-1038602-1433_orig.png");
+    background-size: cover;
     height: 30px;
     width: 30px;
 }
@@ -208,6 +209,18 @@
     font-size: 25px;
 }
 
+#score {
+	height: 35px;
+    width: 70px;
+    font-size: 30px;
+    margin-left: 35px;
+    background-color: lightgrey;
+    border: 5px solid black;
+    text-align: center;
+    color: green;
+
+}
+
 </style>
 
 <div class="gameboy">
@@ -268,6 +281,7 @@
             <div class="dot" style="margin-left: 20px"
             onclick="aButton()">A</div>
         </div>    
+        <div id="score"></div>
     </div>
 </div>
 
@@ -298,6 +312,7 @@ let direction = "down";
 let player = 35;
 
 let enemy = 51;
+let score = 0;
 
 function startGame() {
 	makePixels();
@@ -344,8 +359,9 @@ function move(input) {
       
       /// Temporary Code (For Show) /// 
       if (player == pill) {
-      	createPill();
-        lightenImage();
+      	createPill(); 
+        score+=1;
+        document.getElementById("score").innerText = score;
       }
 	  /// Above is Temporary Code (For Show) ///
       
@@ -380,13 +396,23 @@ function makeEnemy() {
         }
     } 
     
+    if (enemy == pill) {
+      	 createPill();
+    }
+    
     document.getElementById("P" + OGenemy).innerHTML = OGenemy; 
     
 	document.getElementById("P" + enemy).innerHTML = '<div class="' + 
-    'blue' + '">' + enemy +'</div>';    
+    'blue' + '">' + enemy +'</div>';  
+    
+    if (enemy == player) {
+      	 exitGame();
+    }
 }
 
-//setInterval(makeEnemy, 500);
+function startEnemies() {
+	setInterval(makeEnemy, 500);
+}
 
 
 function makeBoundary() {
@@ -433,7 +459,7 @@ let pill = 1;
 let changePic = false;
 
 function createPill() {     
-     while (boundary.includes(pill) || pill == player) {
+     while (boundary.includes(pill) || pill == player || pill == enemy) {
 		pill = Math.floor(Math.random() * 79);
      }
 
@@ -442,13 +468,20 @@ function createPill() {
     
 }
 
+
+//// beginning jan3rd 2025
 function startGame2() {
 	document.getElementById("centerSect").style.backgroundImage =  'url("https://moviewatchlist.weebly.com/uploads/8/6/4/2/86429426/background_orig.png")';
+
+	score = 0;
+    enemy = 51;
+    player = 35;
 
 	makePixels();
     move(10);
     toggle();
     
+    startEnemies();
     createPill();
     
     //document.getElementById("game").style.backgroundSize = 'cover';
@@ -552,6 +585,14 @@ function aButton() {
     	cursor = "howToPlay"
     	document.getElementById("ruleScreen").style.display = "none";
     }
+}
+
+function exitGame() {
+	refresh();
+}
+
+function refresh() {
+	location.reload(true);
 }
 
 //Added pill class, altered move(), and create function in temp code area 
