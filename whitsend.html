@@ -186,10 +186,7 @@
     left: 175px;
     margin-top: 25px;
     
-      font-weight: bold;
-
-    
-    display: none;
+    font-weight: bold;
 }
 
 #ruleScreen {
@@ -221,6 +218,22 @@
 
 }
 
+#playAgain {
+	background-color: red;
+    height: 100px;
+    width: 300px;
+    text-align: center;
+    color: white;
+    font-size: 40px;
+    position: absolute;
+    margin-top: 125px;
+    margin-left: -8px;
+    
+    z-index: 1;
+    
+    display: none;
+}
+
 </style>
 
 <div class="gameboy">
@@ -237,9 +250,6 @@
             <div class="key" style="background-color: #32127A"></div>
         </div>
         <div class="bottomSectionL">
-            <div class="dot small" onclick="onButton()"></div>
-        	<div style="float:left; padding-left:3px;">Start</div>
-            <br>
             <div style="display: none;">
         		<div style="float:left;">Edit.</div>
             	<div class="dot small" onclick="toggleHiding()"></div>
@@ -247,8 +257,11 @@
         </div>
     </div>
     
+    <div id=playAgain>Press 'A' to Continue</div>
+    
     <div id="selectionScreen" style="color: white;">
-    	<div id="play" style="padding-top: 205px; padding-left: 97px;">
+    	<div id="play" style="padding-top: 205px; padding-left: 97px;
+        color: gold">
         BEGIN GAME</div>
         
         <div id="rules" style="padding-left: 96px;">
@@ -313,6 +326,8 @@ let player = 35;
 
 let enemy = 51;
 let score = 0;
+
+let emptyGame = document.getElementById("game"); ;
 
 function startGame() {
 	makePixels();
@@ -539,16 +554,8 @@ function lightenImage() {
   }
 }
 
-let cursor = "";
+let cursor = "start";
 let selectionScreen = document.getElementById("selectionScreen");
-
-function onButton() {
-	if (cursor == "") {
-		cursor = "start";
-    	selectionScreen.style.display = "inline-block";
-        document.getElementById("play").style.color = "gold";
-    }  
-}
 
 function up() {
 	if (cursor == "playing") {
@@ -584,18 +591,21 @@ function aButton() {
     } else if (cursor == "returnHome") {
     	cursor = "howToPlay"
     	document.getElementById("ruleScreen").style.display = "none";
+    } else if (cursor == "refresh") {
+    	refresh();
     }
 }
 
 function exitGame() {
-	refresh();
+	document.getElementById("playAgain").style.display = "inline-block";
+    cursor = "refresh";
 }
 
+// Reloads page
 function refresh() {
 	location.reload(true);
 }
 
-//Added pill class, altered move(), and create function in temp code area 
 
 </script>
 
