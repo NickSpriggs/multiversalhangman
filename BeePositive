@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+
+body {
+    background-color: blue;
+    color: white;
+    text-align: center;
+    margin: 0;
+  	height: 100vh;
+  	display: grid;
+  	place-items: center;
+    font-size: 100px;
+}
+
+#screen {
+	
+}
+</style>
+
+<body onclick="on()">
+
+<div id="screen">
+    <div id="bee">Bee</div>
+    <div id="affirm">Positive !</div>
+</div>
+
+</body>
+
+<script>
+
+let words = ["Yourself", "Brave", "Extraordinary", "Confident", "Fearless", "Bold", "Curious", "Authentic", "Present", "Intentional"];
+let colors = ["darkred", "green", "gold", "blue"];
+let count = 0;
+
+function on() {
+    if (count == 4) {
+    	count = 0;
+    }
+    
+    let index = Math.floor(Math.random() * words.length);
+	let aff = words.splice(index, 1)[0];
+    
+    document.body.style.backgroundColor = colors[count];
+    document.getElementById("affirm").innerText = aff;
+    count++;
+}
+
+
+</script>
+
+</html> 
